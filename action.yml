@@ -1,0 +1,19 @@
+name: "Create Preview Environment"
+description: "Create an Okteto Cloud preview environment"
+inputs:
+  name: 
+    description: "The name of the preview environment to create"
+    required: true
+  type:
+    description: "The type of preview env to create"
+    required: false
+    default: "personal"
+runs:
+  using: "docker"
+  image: "Dockerfile"
+  args:
+    - ${{ inputs.name }}
+    - ${{ inputs.type }}
+branding:
+  color: 'green'
+  icon: 'grid'
