@@ -43,8 +43,8 @@ jobs:
       with:
         token: ${{ secrets.OKTETO_TOKEN }}
     
-    - name: "Create the previews preview environment"
-      uses: okteto/create-preview@master
+    - name: "Deploy the previews preview environment"
+      uses: okteto/deploy-preview@master
       with:
         name: dev-previews-cindylopez
 ```
@@ -75,8 +75,8 @@ jobs:
        with:
          token: ${{ secrets.OKTETO_TOKEN }}
      
-    - name: "Create the previews preview environment"
-      uses: okteto/create-preview@master
+    - name: "Deploy the preview environment"
+      uses: okteto/deploy-preview@master
       with:
         name: dev-previews-cindylopez
  ```
