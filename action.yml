@@ -13,7 +13,9 @@ runs:
   image: "Dockerfile"
   args:
     - ${{ inputs.name }}
+    - ${{ inputs.timeout }}
     - ${{ inputs.type }}
+    - ${{ inputs.variables }}
 branding:
   color: 'green'
   icon: 'grid'
