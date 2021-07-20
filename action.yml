@@ -4,10 +4,16 @@ inputs:
   name: 
     description: "The name of the preview environment to create"
     required: true
+  timeout:
+    description: 'The length of time to wait for completion, zero means never. Any other values should contain a corresponding time unit e.g. 1s, 2m, 3h  (default 5m0s)'
+    required: false
   type:
     description: "The type of preview env to create"
     required: false
     default: "personal"
+  variables:
+    description: 'Variables to be used by the pipeline. If several variables are present, they should be separated by commas e.g. VAR1=VAL1,VAR2=VAL2,VAR3=VAL3'
+    required: false
 runs:
   using: "docker"
   image: "Dockerfile"
