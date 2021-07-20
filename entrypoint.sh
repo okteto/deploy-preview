@@ -3,7 +3,7 @@ set -e
 
 name=$1
 timeout=$2
-type=$3
+scope=$3
 variables=$4
 
 
@@ -12,8 +12,8 @@ if [ -z $name ]; then
   exit 1
 fi
 
-if [ -z $type ]; then
-  echo "Preview environment type is required"
+if [ -z $scope ]; then
+  echo "Preview environment scope is required"
   exit 1
 fi
 
@@ -53,5 +53,5 @@ fi
 
 export OKTETO_DISABLE_SPINNER=1
 
-echo running: okteto preview create $name -t $type --branch="${branch}" --repository="${GITHUB_SERVER_URL}/${repository}" ${params} --wait
-okteto preview create $name -t $type --branch="${branch}" --repository="${GITHUB_SERVER_URL}/${repository}" ${params} --wait
+echo running: okteto preview create $name -s $scope --branch="${branch}" --repository="${GITHUB_SERVER_URL}/${repository}" ${params} --wait
+okteto preview create $name -s $scope --branch="${branch}" --repository="${GITHUB_SERVER_URL}/${repository}" ${params} --wait

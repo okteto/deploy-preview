@@ -7,8 +7,8 @@ inputs:
   timeout:
     description: 'The length of time to wait for completion, zero means never. Any other values should contain a corresponding time unit e.g. 1s, 2m, 3h  (default 5m0s)'
     required: false
-  type:
-    description: "The type of preview env to create"
+  scope:
+    description: "The scope of preview env to create"
     required: false
     default: "personal"
   variables:
@@ -20,7 +20,7 @@ runs:
   args:
     - ${{ inputs.name }}
     - ${{ inputs.timeout }}
-    - ${{ inputs.type }}
+    - ${{ inputs.scope }}
     - ${{ inputs.variables }}
 branding:
   color: 'green'

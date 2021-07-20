@@ -21,11 +21,11 @@ You can use this action to create a preview environment in Okteto Cloud as part 
 
 The length of time to wait for completion. Values should contain a corresponding time unit e.g. 1s, 2m, 3h. If not specified it will use `5m`.
 
-### `type`
+### `scope`
 
-**Required**  The type of the Okteto preview environment to create.
+**Required**  The scope of the Okteto preview environment to create.
 
-> Available types are 'personal' and 'global'.
+> Available scopes are 'personal' and 'global'.
 
 
 ### `variables`
