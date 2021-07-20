@@ -1,4 +1,4 @@
-name: "Create Preview Environment"
+name: "Deploy Preview Environment"
 description: "Create an Okteto Cloud preview environment"
 inputs:
   name: 
