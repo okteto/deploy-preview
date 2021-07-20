@@ -17,11 +17,20 @@ You can use this action to create a preview environment in Okteto Cloud as part 
 
 > Remember that the preview environment name must have your github ID as a suffix.
 
+### `timeout`
+
+The length of time to wait for completion. Values should contain a corresponding time unit e.g. 1s, 2m, 3h. If not specified it will use `5m`.
+
 ### `type`
 
 **Required**  The type of the Okteto preview environment to create.
 
 > Available types are 'personal' and 'global'.
+
+
+### `variables`
+
+A list of variables to be used by the pipeline. If several variables are present, they should be separated by commas e.g. VAR1=VAL1,VAR2=VAL2,VAR3=VAL3.
 
 ## Example usage
 
