@@ -47,7 +47,9 @@ jobs:
   devflow:
     runs-on: ubuntu-latest
     steps:
-    
+    - name: checkout
+      uses: actions/checkout@master
+      
     - uses: okteto/login@master
       with:
         token: ${{ secrets.OKTETO_TOKEN }}
