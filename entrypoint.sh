@@ -57,4 +57,8 @@ echo running: okteto preview deploy $name -scope $scope --branch="${branch}" --r
 okteto preview deploy $name --scope $scope --branch="${branch}" --repository="${GITHUB_SERVER_URL}/${repository}" ${params} --wait
  
 message=$(/message $name)
+if [ -z $GITHUB_TOKEN ]; then
+  echo "Skipping auto comment"
+  exit 0
+fi
 /notify-pr.sh message $GITHUB_TOKEN
