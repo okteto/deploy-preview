@@ -56,5 +56,5 @@ export OKTETO_DISABLE_SPINNER=1
 echo running: okteto preview deploy $name -scope $scope --branch="${branch}" --repository="${GITHUB_SERVER_URL}/${repository}" ${params} --wait
 okteto preview deploy $name --scope $scope --branch="${branch}" --repository="${GITHUB_SERVER_URL}/${repository}" ${params} --wait
  
-message=$(message $name)
-sh notify-pr.sh message
+message=$(./message $name)
+./notify-pr.sh message
