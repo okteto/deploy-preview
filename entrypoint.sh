@@ -57,4 +57,4 @@ echo running: okteto preview deploy $name -scope $scope --branch="${branch}" --r
 okteto preview deploy $name --scope $scope --branch="${branch}" --repository="${GITHUB_SERVER_URL}/${repository}" ${params} --wait
  
 message=$(/message $name)
-/notify-pr.sh message
+/notify-pr.sh message $GITHUB_TOKEN
