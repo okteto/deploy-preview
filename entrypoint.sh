@@ -55,8 +55,6 @@ export OKTETO_DISABLE_SPINNER=1
 
 echo running: okteto preview deploy $name -scope $scope --branch="${branch}" --repository="${GITHUB_SERVER_URL}/${repository}" ${params} --wait
 okteto preview deploy $name --scope $scope --branch="${branch}" --repository="${GITHUB_SERVER_URL}/${repository}" ${params} --wait
-
-export GO111MODULE=auto 
-go get github.com/machinebox/graphql 
-message=$(go run message.go $name)
+ 
+message=$(message $name)
 sh notify-pr.sh message
