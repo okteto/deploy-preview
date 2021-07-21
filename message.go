@@ -67,17 +67,11 @@ func main() {
 
 	oktetoURL := getOktetoURL()
 	previewURL := fmt.Sprintf("%s/#/previews/%s", oktetoURL, previewName)
-	servicesRunningStatus := getServicesRunning(previewName)
 	endpoints := getEndpoints(previewName)
 
 	var firstLine string
-	if areAllServicesRunning(servicesRunningStatus) {
-		firstLine = fmt.Sprintf("Your preview environment [%s](%s) has been deployed correctly.", previewName, previewURL)
-	} else {
-		servicesNotRunning := getServicesNotRunning(servicesRunningStatus)
-		firstLine = fmt.Sprintf("Your preview environment [%s](%s) has been deployed with errors on [%s].", previewName, previewURL, strings.Join(servicesNotRunning, ", "))
-	}
 
+	firstLine = fmt.Sprintf("Your preview environment [%s](%s) has been deployed.", previewName, previewURL)
 	fmt.Println(firstLine)
 
 	if len(endpoints) == 1 {
@@ -93,45 +87,6 @@ func getOktetoURL() string {
 		return t.URL
 	}
 	return ""
-}
-
-func getServicesRunning(previewName string) map[string]bool {
-	result := make(map[string]bool)
-	q := fmt.Sprintf(`query{
-		preview(id: "%s"){
-			deployments {
-				name, status
-			},
-			statefulsets {
-				name, status
-			}
-		},
-	}`, previewName)
-	var body PreviewBody
-	if err := query(q, &body); err != nil {
-		return result
-	}
-
-	for _, d := range body.Preview.Deployments {
-		var isRunning bool
-		if d.Status == "running" {
-			isRunning = true
-		} else {
-			isRunning = false
-		}
-		result[d.Name] = isRunning
-	}
-
-	for _, sfs := range body.Preview.Statefulsets {
-		var isRunning bool
-		if sfs.Status == "running" {
-			isRunning = true
-		} else {
-			isRunning = false
-		}
-		result[sfs.Name] = isRunning
-	}
-	return result
 }
 
 func getEndpoints(previewName string) []string {
