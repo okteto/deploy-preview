@@ -52,7 +52,7 @@ if [ ! -z "${variables}" ]; then
 fi
 
 export OKTETO_DISABLE_SPINNER=1
-number=$(jq '[ .number ][0]' event.json) 
+number=$(jq '[ .number ][0]' $GITHUB_EVENT_PATH) 
 echo running: okteto preview deploy $name -scope $scope --branch="${branch}" --repository="${GITHUB_SERVER_URL}/${repository}}" --sourceUrl="${GITHUB_SERVER_URL}/${repository}/pull/${number}" ${params} --wait
 okteto preview deploy $name --scope $scope --branch="${branch}" --repository="${GITHUB_SERVER_URL}/${repository}" --sourceUrl="${GITHUB_SERVER_URL}/${repository}/pull/${number}" ${params} --wait
  
