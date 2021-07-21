@@ -2,13 +2,13 @@
 require "octokit"
 require "json"
 
-if !ENV["GITHUB_TOKEN"]
-    puts "Missing GITHUB_TOKEN"
+if ENV["GITHUB_EVENT_NAME"] != "pull_request"
+    puts "This action only supports pull_request events."
     exit(1)
 end
 
-if ENV["GITHUB_EVENT_NAME"] != "pull_request"
-    puts "This action only supports pull_request events."
+if !ENV["GITHUB_TOKEN"]
+    puts "Missing GITHUB_TOKEN"
     exit(1)
 end
 
