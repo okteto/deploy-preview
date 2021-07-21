@@ -10,6 +10,7 @@ FROM ruby:3-slim-buster
 RUN gem install octokit
 
 COPY notify-pr.sh /notify-pr.sh
+RUN chmod +x notify-pr.sh
 COPY entrypoint.sh /entrypoint.sh
 COPY --from=message-builder /message /message
 COPY --from=okteto /usr/local/bin/okteto /usr/local/bin/okteto
