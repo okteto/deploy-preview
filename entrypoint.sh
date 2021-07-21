@@ -52,9 +52,11 @@ if [ ! -z "${variables}" ]; then
 fi
 
 export OKTETO_DISABLE_SPINNER=1
-
-echo running: okteto preview deploy $name -scope $scope --branch="${branch}" --repository="${GITHUB_SERVER_URL}/${repository}" ${params} --wait
-okteto preview deploy $name --scope $scope --branch="${branch}" --repository="${GITHUB_SERVER_URL}/${repository}" ${params} --wait
+number=$(jq '[ .number ][0]' $GITHUB_EVENT_PATH) 
+echo running: okteto preview deploy $name -scope $scope --branch="${branch}" --repository="${GITHUB_SERVER_URL}/${repository}" --sourceUrl="${GITHUB_SERVER_URL}/${repository}/pull/${number}" ${params} --wait
+okteto preview deploy $name --scope $scope --branch="${branch}" --repository="${GITHUB_SERVER_URL}/${repository}" --sourceUrl="${GITHUB_SERVER_URL}/${repository}/pull/${number}" ${params} --wait
  
-message=$(/message $name)
-/notify-pr.sh "$message" $GITHUB_TOKEN
+if [ ! -z $GITHUB_TOKEN ]; then
+  message=$(/message $name)
+  /notify-pr.sh "$message" $GITHUB_TOKEN
+fi
