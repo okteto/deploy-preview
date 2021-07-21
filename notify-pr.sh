@@ -7,7 +7,7 @@ if ENV["GITHUB_EVENT_NAME"] != "pull_request"
     exit(1)
 end
 
-if !ENV["GITHUB_TOKEN"]
+if !message = ARGV[1]
     puts "Missing GITHUB_TOKEN"
     exit(1)
 end
