@@ -1,4 +1,4 @@
-FROM okteto/okteto:1.13.2 as builder
+FROM okteto/okteto:1.13.2 as okteto
 
 FROM golang:1.16 as message-builder
 RUN go env -w GO111MODULE=off
@@ -12,6 +12,6 @@ RUN gem install octokit
 COPY notify-pr.sh /notify-pr.sh
 COPY entrypoint.sh /entrypoint.sh
 COPY --from=message-builder /message /message
-COPY --from=builder /usr/local/bin/okteto /usr/local/bin/okteto
+COPY --from=okteto /usr/local/bin/okteto /usr/local/bin/okteto
 
 ENTRYPOINT ["/entrypoint.sh"] 
