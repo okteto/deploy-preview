@@ -56,8 +56,7 @@ number=$(jq '[ .number ][0]' event.json)
 echo running: okteto preview deploy $name -scope $scope --branch="${branch}" --repository="${GITHUB_SERVER_URL}/${repository}}" --sourceUrl="${GITHUB_SERVER_URL}/${repository}/pull/${number}" ${params} --wait
 okteto preview deploy $name --scope $scope --branch="${branch}" --repository="${GITHUB_SERVER_URL}/${repository}" --sourceUrl="${GITHUB_SERVER_URL}/${repository}/pull/${number}" ${params} --wait
  
-echo running: okteto preview deploy $name -scope $scope --branch="${branch}" --repository="${GITHUB_SERVER_URL}/${repository}" ${params} --wait
-okteto preview deploy $name --scope $scope --branch="${branch}" --repository="${GITHUB_SERVER_URL}/${repository}" ${params} --wait
- 
-message=$(/message $name)
-/notify-pr.sh "$message" $GITHUB_TOKEN
+if [ ! -z $GITHUB_TOKEN ]; then
+  message=$(/message $name)
+  /notify-pr.sh "$message" $GITHUB_TOKEN
+fi
