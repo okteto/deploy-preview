@@ -205,6 +205,7 @@ func waitForResourcesRunning(previewName string) error {
 			break
 		}
 		time.Sleep(10 * time.Second)
+		retries++
 	}
 	return nil
 }
@@ -214,10 +215,10 @@ func getResourceStatus(previewName string) (map[string]string, error) {
 	q := fmt.Sprintf(`query{
 		preview(id: "%s"){
 			deployments{
-				status
+				name, status
 			},
 			statefulsets{
-				status
+				name, status
 			}
 		}
 	}`, previewName)
