@@ -74,7 +74,7 @@ func main() {
 
 	var firstLine string
 
-	if err != nil {
+	if err == nil {
 		firstLine = fmt.Sprintf("Your preview environment [%s](%s) has been deployed.", previewName, previewURL)
 	} else {
 		firstLine = fmt.Sprintf("Your preview environment [%s](%s) has been deployed with errors.", previewName, previewURL)
