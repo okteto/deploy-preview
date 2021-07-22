@@ -189,23 +189,24 @@ func getServicesNotRunning(servicesRunningStatus map[string]bool) []string {
 }
 
 func waitForResourcesRunning(previewName string) error {
-	retries := 0
-	wait := false
-	for retries < 5 {
+	exit := false
+
+	ticker := time.NewTicker(5 * time.Second)
+	timeout := time.Now().Add(300 * time.Second)
+	for time.Now().Before(timeout) {
+		<-ticker.C
 		resourceStatus, err := getResourceStatus(previewName)
 		if err != nil {
 			return err
 		}
 		for _, status := range resourceStatus {
 			if status != "running" {
-				wait = true
+				exit = true
 			}
 		}
-		if !wait {
+		if !exit {
 			break
 		}
-		time.Sleep(10 * time.Second)
-		retries++
 	}
 	return nil
 }
