@@ -8,6 +8,7 @@ import (
 	"os"
 	"path/filepath"
 	"strings"
+	"time"
 
 	"github.com/machinebox/graphql"
 )
@@ -67,6 +68,8 @@ func main() {
 
 	oktetoURL := getOktetoURL()
 	previewURL := fmt.Sprintf("%s/#/previews/%s", oktetoURL, previewName)
+	waitForResourcesRunning(previewName)
+
 	endpoints := getEndpoints(previewName)
 
 	var firstLine string
@@ -183,4 +186,52 @@ func getServicesNotRunning(servicesRunningStatus map[string]bool) []string {
 		}
 	}
 	return servicesNotRunnig
+}
+
+func waitForResourcesRunning(previewName string) error {
+	retries := 0
+	wait := false
+	for retries < 5 {
+		resourceStatus, err := getResourceStatus(previewName)
+		if err != nil {
+			return err
+		}
+		for _, status := range resourceStatus {
+			if status != "running" {
+				wait = true
+			}
+		}
+		if !wait {
+			break
+		}
+		time.Sleep(10 * time.Second)
+	}
+	return nil
+}
+
+func getResourceStatus(previewName string) (map[string]string, error) {
+	status := make(map[string]string)
+	q := fmt.Sprintf(`query{
+		preview(id: "%s"){
+			deployments{
+				status
+			},
+			statefulsets{
+				status
+			}
+		}
+	}`, previewName)
+	var body PreviewBody
+	if err := query(q, &body); err != nil {
+		return status, err
+	}
+
+	for _, d := range body.Preview.Deployments {
+		status[d.Name] = d.Status
+	}
+
+	for _, sfs := range body.Preview.Statefulsets {
+		status[sfs.Name] = sfs.Status
+	}
+	return status, nil
 }
