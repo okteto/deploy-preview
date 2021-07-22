@@ -68,13 +68,17 @@ func main() {
 
 	oktetoURL := getOktetoURL()
 	previewURL := fmt.Sprintf("%s/#/previews/%s", oktetoURL, previewName)
-	waitForResourcesRunning(previewName)
+	err := waitForResourcesRunning(previewName)
 
 	endpoints := getEndpoints(previewName)
 
 	var firstLine string
 
-	firstLine = fmt.Sprintf("Your preview environment [%s](%s) has been deployed.", previewName, previewURL)
+	if err != nil {
+		firstLine = fmt.Sprintf("Your preview environment [%s](%s) has been deployed.", previewName, previewURL)
+	} else {
+		firstLine = fmt.Sprintf("Your preview environment [%s](%s) has been deployed with errors.", previewName, previewURL)
+	}
 	fmt.Println(firstLine)
 
 	if len(endpoints) == 1 {
@@ -193,16 +197,23 @@ func waitForResourcesRunning(previewName string) error {
 
 	ticker := time.NewTicker(5 * time.Second)
 	timeout := time.Now().Add(300 * time.Second)
+	errors := make(map[string]int)
 	for time.Now().Before(timeout) {
 		<-ticker.C
 		resourceStatus, err := getResourceStatus(previewName)
 		if err != nil {
 			return err
 		}
-		for _, status := range resourceStatus {
+		for name, status := range resourceStatus {
 			if status != "running" {
 				exit = true
 			}
+			if status == "error" {
+				errors[name] = 1
+			}
+		}
+		if len(errors) > 0 {
+			return fmt.Errorf("Services with errors found")
 		}
 		if !exit {
 			break
