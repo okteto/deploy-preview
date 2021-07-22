@@ -193,7 +193,7 @@ func getServicesNotRunning(servicesRunningStatus map[string]bool) []string {
 }
 
 func waitForResourcesRunning(previewName string) error {
-	exit := false
+	areAllRunning := false
 
 	ticker := time.NewTicker(5 * time.Second)
 	timeout := time.Now().Add(300 * time.Second)
@@ -204,9 +204,10 @@ func waitForResourcesRunning(previewName string) error {
 		if err != nil {
 			return err
 		}
+		areAllRunning = true
 		for name, status := range resourceStatus {
 			if status != "running" {
-				exit = true
+				areAllRunning = false
 			}
 			if status == "error" {
 				errors[name] = 1
@@ -215,7 +216,7 @@ func waitForResourcesRunning(previewName string) error {
 		if len(errors) > 0 {
 			return fmt.Errorf("Services with errors found")
 		}
-		if !exit {
+		if areAllRunning {
 			break
 		}
 	}
