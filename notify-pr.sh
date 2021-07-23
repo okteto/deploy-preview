@@ -25,7 +25,7 @@ comment = comments.find { |c| c["body"].start_with?("Your preview environment") 
 
 if comment
     puts "Message already exists in the PR. Updating"
-    github.update_comment(repo, comment["id"], message)
+    github.update_comment(repo, comment["id"], message + "from here")
     exit(0)
 end
 
