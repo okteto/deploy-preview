@@ -81,13 +81,12 @@ jobs:
      env:
        OKTETO_CA_CERT: ${{ secrets.OKTETO_CA_CERT }}
      steps:
-     
-     - uses: okteto/login@master
-       with:
-         token: ${{ secrets.OKTETO_TOKEN }}
-     
+      
     - name: "Deploy the preview environment"
       uses: okteto/deploy-preview@master
+      env:
+        OKTETO_URL: https://cloud.okteto.com
+        OKTETO_TOKEN: ${{ secrets.OKTETO_TOKEN }}
       with:
         name: dev-previews-cindylopez
  ```
