@@ -21,10 +21,11 @@ pr = event["number"]
 
 github = Octokit::Client.new(access_token: ENV["GITHUB_TOKEN"])
 comments = github.issue_comments(repo, pr)
-exists = comments.find { |c| c["body"] == message }
+comment = comments.find { |c| c["body"].start_with?("Your preview environment") }
 
-if exists
-    puts "Message already exists in the PR"
+if comment
+    puts "Message already exists in the PR. Updating"
+    github.update_comment(repo, comment["id"], message)
     exit(0)
 end
 
