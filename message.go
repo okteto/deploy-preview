@@ -64,19 +64,13 @@ type Endpoint struct {
 
 func main() {
 	previewName := os.Args[1]
-	previewCommandExitCode := os.Args[2]
 
 	oktetoURL := getOktetoURL()
 	previewURL := fmt.Sprintf("%s/#/previews/%s", oktetoURL, previewName)
 	endpoints := getEndpoints(previewName)
 
 	var firstLine string
-
-	if previewCommandExitCode == "0" {
-		firstLine = fmt.Sprintf("Your preview environment [%s](%s) has been deployed.", previewName, previewURL)
-	} else {
-		firstLine = fmt.Sprintf("Your preview environment [%s](%s) has been deployed with errors.", previewName, previewURL)
-	}
+	firstLine = fmt.Sprintf("Your preview environment [%s](%s) has been deployed.", previewName, previewURL)
 	fmt.Println(firstLine)
 
 	if len(endpoints) == 1 {
