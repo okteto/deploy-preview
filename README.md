@@ -87,6 +87,9 @@ jobs:
       env:
         OKTETO_URL: https://cloud.okteto.com
         OKTETO_TOKEN: ${{ secrets.OKTETO_TOKEN }}
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         name: dev-previews-cindylopez
+        scope: personal
+        timeout: 15m
  ```
