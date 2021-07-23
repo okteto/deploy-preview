@@ -88,6 +88,10 @@ jobs:
      
     - name: "Deploy the preview environment"
       uses: okteto/deploy-preview@master
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         name: dev-previews-cindylopez
+        scope: personal
+        timeout: 15m
  ```
