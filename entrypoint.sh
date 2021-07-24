@@ -57,11 +57,9 @@ echo running: okteto preview deploy $name -scope $scope --branch="${branch}" --r
 ret=0
 okteto preview deploy $name --scope $scope --branch="${branch}" --repository="${GITHUB_SERVER_URL}/${repository}" --sourceUrl="${GITHUB_SERVER_URL}/${repository}/pull/${number}" ${params} --wait || ret=1
 
-echo $ret 
-
 if [ ! -z $GITHUB_TOKEN ]; then
   withErrors="preview deployed with resource errors"
-  if [ ret = 1 ]; then
+  if [ $ret = 1 ]; then
     message=$(/message $name 1)
   else
     message=$(/message $name 0)
