@@ -60,7 +60,7 @@ okteto preview deploy $name --scope $scope --branch="${branch}" --repository="${
 
 if [ ! -z $GITHUB_TOKEN ]; then
   withErrors="preview deployed with resource errors"
-  if [ ret == 1 ] ;then
+  if [ ret = 1 ]; then
     message=$(/message $name 1)
   else
     message=$(/message $name 0)
