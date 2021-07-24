@@ -56,7 +56,8 @@ number=$(jq '[ .number ][0]' $GITHUB_EVENT_PATH)
 echo running: okteto preview deploy $name -scope $scope --branch="${branch}" --repository="${GITHUB_SERVER_URL}/${repository}" --sourceUrl="${GITHUB_SERVER_URL}/${repository}/pull/${number}" ${params} --wait
 ret=0
 okteto preview deploy $name --scope $scope --branch="${branch}" --repository="${GITHUB_SERVER_URL}/${repository}" --sourceUrl="${GITHUB_SERVER_URL}/${repository}/pull/${number}" ${params} --wait || ret=1
- 
+
+echo $ret 
 
 if [ ! -z $GITHUB_TOKEN ]; then
   withErrors="preview deployed with resource errors"
