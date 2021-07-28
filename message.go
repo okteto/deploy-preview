@@ -5,9 +5,10 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"net/url"
 	"os"
 	"path/filepath"
-	"strings"
+	"sort"
 
 	"github.com/machinebox/graphql"
 )
@@ -82,7 +83,10 @@ func main() {
 		fmt.Printf("\n  Preview environment endpoint is available [here](%s)", endpoints[0])
 	} else if len(endpoints) > 1 {
 		endpoints = translateEndpoints(endpoints)
-		fmt.Printf("\n  Preview environment endpoints are available at:\n    - %s", strings.Join(endpoints, "    - "))
+		fmt.Printf("\n  Preview environment endpoints are available at:")
+		for _, endpoint := range endpoints {
+			fmt.Printf("\n  * %s", endpoint)
+		}
 	}
 
 }
@@ -101,7 +105,7 @@ func getEndpoints(previewName string) []string {
 			deployments{
 				endpoints{
 					url
-				} 
+				}
 			},
 			statefulsets{
 				endpoints{
@@ -135,15 +139,19 @@ func query(query string, result interface{}) error {
 		token = t.Token
 	}
 	ctx := context.Background()
-	url := fmt.Sprintf("%s/graphql", getOktetoURL())
+	oktetoURL, err := parseOktetoURL()
+	if err != nil {
+		return err
+	}
 
-	c := graphql.NewClient(url)
+	c := graphql.NewClient(oktetoURL)
 
 	req := graphql.NewRequest(query)
 	req.Header.Set("Authorization", fmt.Sprintf("Bearer %s", token))
 
 	if err := c.Run(ctx, req, result); err != nil {
 		fmt.Print(err)
+		return err
 	}
 	return nil
 }
@@ -164,27 +172,26 @@ func getToken() *Token {
 
 func translateEndpoints(endpoints []string) []string {
 	result := make([]string, 0)
+	sort.Slice(endpoints, func(i, j int) bool {
+		return len(endpoints[i]) < len(endpoints[j])
+	})
 	for _, endpoint := range endpoints {
 		result = append(result, fmt.Sprintf("[%s](%s)", endpoint, endpoint))
 	}
 	return result
 }
 
-func areAllServicesRunning(servicesRunningStatus map[string]bool) bool {
-	for _, isRunning := range servicesRunningStatus {
-		if !isRunning {
-			return false
-		}
+func parseOktetoURL() (string, error) {
+	parsed, err := url.Parse(getOktetoURL())
+	if err != nil {
+		return "", err
 	}
-	return true
-}
 
-func getServicesNotRunning(servicesRunningStatus map[string]bool) []string {
-	servicesNotRunnig := make([]string, 0)
-	for svcName, isRunning := range servicesRunningStatus {
-		if !isRunning {
-			servicesNotRunnig = append(servicesNotRunnig, svcName)
-		}
+	if parsed.Scheme == "" {
+		parsed.Scheme = "https"
+		parsed.Host = parsed.Path
 	}
-	return servicesNotRunnig
+
+	parsed.Path = "graphql"
+	return parsed.String(), nil
 }
