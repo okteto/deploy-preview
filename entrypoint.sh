@@ -54,10 +54,15 @@ fi
 export OKTETO_DISABLE_SPINNER=1
 number=$(jq '[ .number ][0]' $GITHUB_EVENT_PATH) 
 echo running: okteto preview deploy $name -scope $scope --branch="${branch}" --repository="${GITHUB_SERVER_URL}/${repository}" --sourceUrl="${GITHUB_SERVER_URL}/${repository}/pull/${number}" ${params} --wait
-okteto preview deploy $name --scope $scope --branch="${branch}" --repository="${GITHUB_SERVER_URL}/${repository}" --sourceUrl="${GITHUB_SERVER_URL}/${repository}/pull/${number}" ${params} --wait
- 
+ret=0
+okteto preview deploy $name --scope $scope --branch="${branch}" --repository="${GITHUB_SERVER_URL}/${repository}" --sourceUrl="${GITHUB_SERVER_URL}/${repository}/pull/${number}" ${params} --wait || ret=1
 
 if [ ! -z $GITHUB_TOKEN ]; then
-  message=$(/message $name)
+  withErrors="preview deployed with resource errors"
+  if [ $ret = 1 ]; then
+    message=$(/message $name 1)
+  else
+    message=$(/message $name 0)
+  fi
   /notify-pr.sh "$message" $GITHUB_TOKEN
 fi
