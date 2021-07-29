@@ -27,10 +27,13 @@ The length of time to wait for completion. Values should contain a corresponding
 
 > Available scopes are 'personal' and 'global'.
 
-
 ### `variables`
 
 A list of variables to be used by the pipeline. If several variables are present, they should be separated by commas e.g. VAR1=VAL1,VAR2=VAL2,VAR3=VAL3.
+
+## Environment Variables
+
+If the `GITHUB_TOKEN` environment variable is set, the action will share the URL of the preview environment with the pull request that triggered the action.
 
 ## Example usage
 
@@ -56,6 +59,8 @@ jobs:
     
     - name: "Deploy the previews preview environment"
       uses: okteto/deploy-preview@master
+      env: 
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         name: dev-previews-cindylopez
 ```
