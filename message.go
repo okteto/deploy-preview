@@ -150,7 +150,6 @@ func query(query string, result interface{}) error {
 	req.Header.Set("Authorization", fmt.Sprintf("Bearer %s", token))
 
 	if err := c.Run(ctx, req, result); err != nil {
-		fmt.Print(err)
 		return err
 	}
 	return nil
