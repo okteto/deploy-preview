@@ -26,7 +26,7 @@ The length of time to wait for completion. Values should contain a corresponding
 
 The scope of the Okteto preview environment to create.
 
-> Available scopes are `personal` and `global`. To create a preview environment with [global scope](https://okteto.com/docs/cloud/preview-environments/preview-environments-github/#preview-environments-for-okteto-enterprise-users) it is necessary to have administrator permissions. These preview environments are accessible by all cluster members.
+> Available scopes are `personal` and `global` (defaults to `personal`). To create a preview environment with [global scope](https://okteto.com/docs/cloud/preview-environments/preview-environments-github/#preview-environments-for-okteto-enterprise-users) it is necessary to have administrator permissions. Global preview environments are accessible by all cluster members.
 
 ### `variables`
 
