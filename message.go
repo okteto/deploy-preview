@@ -1,16 +1,12 @@
 package main
 
 import (
-	"context"
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
-	"net/url"
 	"os"
+	"os/exec"
 	"path/filepath"
-	"sort"
-
-	"github.com/machinebox/graphql"
 )
 
 type Token struct {
@@ -23,44 +19,11 @@ type Token struct {
 	MachineID string `json:"MachineID"`
 }
 
-type PreviewBody struct {
-	Preview Preview `json:"preview"`
-}
-
-// Preview represents the contents of an Okteto Cloud space
-type Preview struct {
-	GitDeploys   []PipelineRun `json:"gitDeploys"`
-	Statefulsets []Statefulset `json:"statefulsets"`
-	Deployments  []Deployment  `json:"deployments"`
-}
-
-//PipelineRun represents an Okteto pipeline status
-type PipelineRun struct {
-	ID         string `json:"id"`
-	Name       string `json:"name"`
-	Repository string `json:"repository"`
-	Status     string `json:"status"`
-}
-
-//Statefulset represents an Okteto statefulset
-type Statefulset struct {
-	ID        string     `json:"id"`
-	Name      string     `json:"name"`
-	Endpoints []Endpoint `json:"endpoints"`
-	Status    string     `json:"status"`
-}
-
-//Deployment represents an Okteto statefulset
-type Deployment struct {
-	ID        string     `json:"id"`
-	Name      string     `json:"name"`
-	Endpoints []Endpoint `json:"endpoints"`
-	Status    string     `json:"status"`
-}
-
 //Endpoint represents an Okteto statefulset
 type Endpoint struct {
-	URL string `json:"url"`
+	URL     string `json:"url"`
+	Divert  bool   `json:"divert"`
+	Private bool   `json:"private"`
 }
 
 func main() {
@@ -69,7 +32,6 @@ func main() {
 
 	oktetoURL := getOktetoURL()
 	previewURL := fmt.Sprintf("%s/#/previews/%s", oktetoURL, previewName)
-	endpoints := getEndpoints(previewName)
 
 	var firstLine string
 	if previewCommandExitCode == "0" {
@@ -79,6 +41,10 @@ func main() {
 	}
 	fmt.Println(firstLine)
 
+	endpoints, err := getEndpoints(previewName)
+	if err != nil {
+		return
+	}
 	if len(endpoints) == 1 {
 		fmt.Printf("\n  Preview environment endpoint is available [here](%s)", endpoints[0])
 	} else if len(endpoints) > 1 {
@@ -90,70 +56,12 @@ func main() {
 	}
 
 }
+
 func getOktetoURL() string {
 	if t := getToken(); t != nil {
 		return t.URL
 	}
 	return ""
-}
-
-func getEndpoints(previewName string) []string {
-	endpoints := make([]string, 0)
-
-	q := fmt.Sprintf(`query{
-		preview(id: "%s"){
-			deployments{
-				endpoints{
-					url
-				}
-			},
-			statefulsets{
-				endpoints{
-					url
-				}
-			}
-		}
-	}`, previewName)
-	var body PreviewBody
-	if err := query(q, &body); err != nil {
-		return []string{}
-	}
-
-	for _, d := range body.Preview.Deployments {
-		for _, endpoint := range d.Endpoints {
-			endpoints = append(endpoints, endpoint.URL)
-		}
-	}
-
-	for _, sfs := range body.Preview.Statefulsets {
-		for _, endpoint := range sfs.Endpoints {
-			endpoints = append(endpoints, endpoint.URL)
-		}
-	}
-	return endpoints
-}
-
-func query(query string, result interface{}) error {
-	var token string
-	if t := getToken(); t != nil {
-		token = t.Token
-	}
-	ctx := context.Background()
-	oktetoURL, err := parseOktetoURL()
-	if err != nil {
-		return err
-	}
-
-	c := graphql.NewClient(oktetoURL)
-
-	req := graphql.NewRequest(query)
-	req.Header.Set("Authorization", fmt.Sprintf("Bearer %s", token))
-
-	if err := c.Run(ctx, req, result); err != nil {
-		fmt.Print(err)
-		return err
-	}
-	return nil
 }
 
 func getToken() *Token {
@@ -170,28 +78,30 @@ func getToken() *Token {
 	return token
 }
 
+func getEndpoints(name string) ([]string, error) {
+	cmd := exec.Command("okteto", "preview", "endpoints", name, "-o", "json")
+	cmd.Env = os.Environ()
+	o, err := cmd.CombinedOutput()
+	if err != nil {
+		return nil, err
+	}
+
+	var endpoints []Endpoint
+	err = json.Unmarshal(o, &endpoints)
+	if err != nil {
+		return nil, err
+	}
+	endpointURLs := make([]string, 0)
+	for _, e := range endpoints {
+		endpointURLs = append(endpointURLs, e.URL)
+	}
+	return endpointURLs, nil
+}
+
 func translateEndpoints(endpoints []string) []string {
 	result := make([]string, 0)
-	sort.Slice(endpoints, func(i, j int) bool {
-		return len(endpoints[i]) < len(endpoints[j])
-	})
 	for _, endpoint := range endpoints {
 		result = append(result, fmt.Sprintf("[%s](%s)", endpoint, endpoint))
 	}
 	return result
-}
-
-func parseOktetoURL() (string, error) {
-	parsed, err := url.Parse(getOktetoURL())
-	if err != nil {
-		return "", err
-	}
-
-	if parsed.Scheme == "" {
-		parsed.Scheme = "https"
-		parsed.Host = parsed.Path
-	}
-
-	parsed.Path = "graphql"
-	return parsed.String(), nil
 }
