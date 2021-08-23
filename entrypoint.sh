@@ -13,8 +13,7 @@ if [ -z $name ]; then
 fi
 
 if [ -z $scope ]; then
-  echo "Preview environment scope is required"
-  exit 1
+  scope=personal
 fi
 
 
