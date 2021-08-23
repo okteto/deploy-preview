@@ -1,7 +1,8 @@
 # GitHub Actions for Okteto Cloud
 
 ## Automate your development workflows using Github Actions and Okteto Cloud
-GitHub Actions gives you the flexibility to build an automated software development workflows. With GitHub Actions for Okteto Cloud you can create workflows to build, deploy and update your applications in [Okteto Cloud](https://cloud.okteto.com).
+
+GitHub Actions gives you the flexibility to build an automated software development workflows. With GitHub Actions for Okteto Cloud you can create workflows to build, deploy and update your applications in [Okteto Cloud](https://cloud.okteto.com). Follow [this tutorial](https://okteto.com/docs/cloud/preview-environments/preview-environments-github/) for a full preview environment configuration sample.
 
 Get started today with a [free Okteto Cloud account](https://cloud.okteto.com)!
 
@@ -23,9 +24,9 @@ The length of time to wait for completion. Values should contain a corresponding
 
 ### `scope`
 
-**Required**  The scope of the Okteto preview environment to create.
+The scope of the Okteto preview environment to create.
 
-> Available scopes are 'personal' and 'global'.
+> Available scopes are `personal` and `global` (defaults to `personal`). To create a preview environment with [global scope](https://okteto.com/docs/cloud/preview-environments/preview-environments-github/#preview-environments-for-okteto-enterprise-users) it is necessary to have administrator permissions. Global preview environments are accessible by all cluster members.
 
 ### `variables`
 
@@ -50,14 +51,11 @@ jobs:
   devflow:
     runs-on: ubuntu-latest
     steps:
-    - name: checkout
-      uses: actions/checkout@master
-      
     - uses: okteto/login@master
       with:
         token: ${{ secrets.OKTETO_TOKEN }}
     
-    - name: "Deploy the previews preview environment"
+    - name: "Deploy the preview environment"
       uses: okteto/deploy-preview@master
       env: 
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -85,16 +83,16 @@ jobs:
      runs-on: ubuntu-latest
      env:
        OKTETO_CA_CERT: ${{ secrets.OKTETO_CA_CERT }}
+
      steps:
-      
-    - name: "Deploy the preview environment"
-      uses: okteto/deploy-preview@master
-      env:
-        OKTETO_URL: https://cloud.okteto.com
-        OKTETO_TOKEN: ${{ secrets.OKTETO_TOKEN }}
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        name: dev-previews-cindylopez
-        scope: personal
-        timeout: 15m
+     - name: "Deploy the preview environment"
+       uses: okteto/deploy-preview@master
+       env:
+         OKTETO_URL: https://cloud.okteto.com
+         OKTETO_TOKEN: ${{ secrets.OKTETO_TOKEN }}
+         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+       with:
+         name: dev-previews-cindylopez
+         scope: global
+         timeout: 15m
  ```
