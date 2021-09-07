@@ -1,4 +1,4 @@
-FROM okteto/okteto:1.13.8 as okteto
+FROM okteto/okteto:1.13.9 as okteto
 
 FROM golang:1.16 as message-builder
 RUN go env -w GO111MODULE=off
