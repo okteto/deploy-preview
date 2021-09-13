@@ -51,12 +51,12 @@ jobs:
   devflow:
     runs-on: ubuntu-latest
     steps:
-    - uses: okteto/login@master
+    - uses: okteto/login@latest
       with:
         token: ${{ secrets.OKTETO_TOKEN }}
     
     - name: "Deploy the preview environment"
-      uses: okteto/deploy-preview@master
+      uses: okteto/deploy-preview@latest
       env: 
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
@@ -86,7 +86,7 @@ jobs:
 
      steps:
      - name: "Deploy the preview environment"
-       uses: okteto/deploy-preview@master
+       uses: okteto/deploy-preview@latest
        env:
          OKTETO_URL: https://cloud.okteto.com
          OKTETO_TOKEN: ${{ secrets.OKTETO_TOKEN }}
