@@ -1,7 +1,7 @@
 name: "Deploy Preview Environment"
 description: "Create an Okteto Cloud preview environment"
 inputs:
-  name: 
+  name:
     description: "The name of the preview environment to create"
     required: true
   timeout:
@@ -14,6 +14,9 @@ inputs:
   variables:
     description: 'Variables to be used by the pipeline. If several variables are present, they should be separated by commas e.g. VAR1=VAL1,VAR2=VAL2,VAR3=VAL3'
     required: false
+  filename:
+    description: "Path to the manifest file"
+    required: false
 runs:
   using: "docker"
   image: "Dockerfile"
@@ -22,6 +25,7 @@ runs:
     - ${{ inputs.timeout }}
     - ${{ inputs.scope }}
     - ${{ inputs.variables }}
+    - ${{ inputs.filename }}
 branding:
   color: 'green'
   icon: 'grid'

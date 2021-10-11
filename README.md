@@ -32,6 +32,10 @@ The scope of the Okteto preview environment to create.
 
 A list of variables to be used by the pipeline. If several variables are present, they should be separated by commas e.g. VAR1=VAL1,VAR2=VAL2,VAR3=VAL3.
 
+### `filename`
+
+Relative path within the repository to the manifest file (default to okteto-pipeline.yaml or .okteto/okteto-pipeline.yaml).
+
 ## Environment Variables
 
 If the `GITHUB_TOKEN` environment variable is set, the action will share the URL of the preview environment with the pull request that triggered the action.
@@ -54,10 +58,10 @@ jobs:
     - uses: okteto/login@latest
       with:
         token: ${{ secrets.OKTETO_TOKEN }}
-    
+
     - name: "Deploy the preview environment"
       uses: okteto/deploy-preview@latest
-      env: 
+      env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         name: dev-previews-cindylopez
@@ -67,7 +71,7 @@ jobs:
 
  ### Custom Certification Authorities or Self-signed certificates
 
- You can specify a custom certificate authority or a self-signed certificate by setting the `OKTETO_CA_CERT` environment variable. When this variable is set, the action will install the certificate in the container, and then execute the action. 
+ You can specify a custom certificate authority or a self-signed certificate by setting the `OKTETO_CA_CERT` environment variable. When this variable is set, the action will install the certificate in the container, and then execute the action.
 
  Use this option if you're using a private Certificate Authority or a self-signed certificate in your [Okteto Enterprise](http://okteto.com/enterprise) instance.  We recommend that you store the certificate as an [encrypted secret](https://docs.github.com/en/actions/reference/encrypted-secrets), and that you define the environment variable for the entire job, instead of doing it on every step.
 

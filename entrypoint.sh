@@ -5,6 +5,7 @@ name=$1
 timeout=$2
 scope=$3
 variables=$4
+filename=$5
 
 
 if [ -z $name ]; then
@@ -48,6 +49,10 @@ if [ ! -z "${variables}" ]; then
   done
 
   params="${params} $variable_params"
+fi
+
+if [ ! -z "$filename" ]; then
+params="${params} --filename $filename"
 fi
 
 export OKTETO_DISABLE_SPINNER=1
