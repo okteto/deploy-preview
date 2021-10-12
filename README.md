@@ -32,7 +32,7 @@ The scope of the Okteto preview environment to create.
 
 A list of variables to be used by the pipeline. If several variables are present, they should be separated by commas e.g. VAR1=VAL1,VAR2=VAL2,VAR3=VAL3.
 
-### `filename`
+### `file`
 
 Relative path within the repository to the manifest file (default to okteto-pipeline.yaml or .okteto/okteto-pipeline.yaml).
 
