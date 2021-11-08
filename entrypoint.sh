@@ -52,7 +52,7 @@ if [ ! -z "${variables}" ]; then
 fi
 
 if [ ! -z "$file" ]; then
-params="${params} --filename $file"
+params="${params} --file $file"
 fi
 
 export OKTETO_DISABLE_SPINNER=1
