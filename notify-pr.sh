@@ -19,7 +19,7 @@ json = File.read(ENV.fetch("GITHUB_EVENT_PATH"))
 event = JSON.parse(json)
 pr = event["number"]
 
-github = Octokit::Client.new(access_token: ENV["GITHUB_TOKEN"])
+github = Octokit::Client.new(:access_token => ENV["GITHUB_TOKEN"])
 comments = github.issue_comments(repo, pr)
 comment = comments.find { |c| c["body"].start_with?("Your preview environment") }
 
