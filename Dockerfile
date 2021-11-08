@@ -8,7 +8,8 @@ RUN go build -o /message .
 RUN curl https://stedolan.github.io/jq/download/linux64/jq > /usr/bin/jq && chmod +x /usr/bin/jq
 
 FROM ruby:3-slim-buster
-RUN gem install octokit
+
+RUN gem install faraday -v 1.6.0 && gem install octokit
 
 COPY notify-pr.sh /notify-pr.sh
 RUN chmod +x notify-pr.sh
