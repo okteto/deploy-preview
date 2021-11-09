@@ -9,14 +9,13 @@ import (
 	"path/filepath"
 )
 
-type Token struct {
-	URL       string `json:"URL"`
-	Buildkit  string `json:"Buildkit"`
-	Registry  string `json:"Registry"`
-	ID        string `json:"ID"`
-	Username  string `json:"Username"`
-	Token     string `json:"Token"`
-	MachineID string `json:"MachineID"`
+type contexts struct {
+	Current  string             `json:"current-context"`
+	Contexts map[string]context `json:"contexts"`
+}
+
+type context struct {
+	Name string `json:"name"`
 }
 
 //Endpoint represents an Okteto statefulset
@@ -30,7 +29,11 @@ func main() {
 	previewName := os.Args[1]
 	previewCommandExitCode := os.Args[2]
 
-	oktetoURL := getOktetoURL()
+	oktetoURL, err := getOktetoURL()
+	if err != nil {
+		return
+	}
+
 	previewURL := fmt.Sprintf("%s/#/previews/%s", oktetoURL, previewName)
 
 	var firstLine string
@@ -57,25 +60,23 @@ func main() {
 
 }
 
-func getOktetoURL() string {
-	if t := getToken(); t != nil {
-		return t.URL
-	}
-	return ""
-}
-
-func getToken() *Token {
-	tokenPath := filepath.Join(os.Getenv("HOME"), ".okteto", ".token.json")
-	b, err := ioutil.ReadFile(tokenPath)
+func getOktetoURL() (string, error) {
+	contextsPath := filepath.Join(os.Getenv("HOME"), ".okteto", "context", "config.json")
+	b, err := ioutil.ReadFile(contextsPath)
 	if err != nil {
-		return nil
+		return "", err
 	}
 
-	token := &Token{}
-	if err := json.Unmarshal(b, token); err != nil {
-		return nil
+	contexts := &contexts{}
+	if err := json.Unmarshal(b, contexts); err != nil {
+		return "", err
 	}
-	return token
+
+	if val, ok := contexts.Contexts[contexts.Current]; ok {
+		return val.Name, nil
+	}
+
+	return "", fmt.Errorf("context %s is missing", contexts.Current)
 }
 
 func getEndpoints(name string) ([]string, error) {
