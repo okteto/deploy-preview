@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"log"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -31,6 +32,7 @@ func main() {
 
 	oktetoURL, err := getOktetoURL()
 	if err != nil {
+		log.Fatal(err)
 		return
 	}
 
