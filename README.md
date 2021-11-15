@@ -42,7 +42,7 @@ If the `GITHUB_TOKEN` environment variable is set, the action will share the URL
 
 ## Example usage
 
-This example runs the login action and then creates a preview environment.
+This example runs the context action and then creates a preview environment.
 
 ```yaml
 # File: .github/workflows/workflow.yml
@@ -55,7 +55,7 @@ jobs:
   devflow:
     runs-on: ubuntu-latest
     steps:
-    - uses: okteto/login@latest
+    - uses: okteto/context@latest
       with:
         token: ${{ secrets.OKTETO_TOKEN }}
 
