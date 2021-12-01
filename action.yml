@@ -1,5 +1,5 @@
 name: "Deploy Preview Environment"
-description: "Create an Okteto Cloud preview environment"
+description: "Preview environments for your Docker Compose or Kubernetes applications"
 inputs:
   name:
     description: "The name of the preview environment to create"
