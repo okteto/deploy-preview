@@ -1,5 +1,5 @@
 FROM okteto/okteto:1.15.6 as okteto
-FROM ghcr.io/okteto/deploy-preview
+FROM ghcr.io/okteto/deploy-preview:latest
 
 COPY notify-pr.sh /notify-pr.sh
 RUN chmod +x notify-pr.sh
