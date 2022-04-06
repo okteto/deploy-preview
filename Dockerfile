@@ -1,9 +1,8 @@
-FROM okteto/okteto:1.15.6 as okteto
-FROM ghcr.io/okteto/deploy-preview:latest
+FROM okteto/okteto:2.0.3 as okteto
 
-COPY notify-pr.sh /notify-pr.sh
-RUN chmod +x notify-pr.sh
-COPY entrypoint.sh /entrypoint.sh
+FROM okteto/actions-base:1.0
 COPY --from=okteto /usr/local/bin/okteto /usr/local/bin/okteto
+COPY entrypoint.sh /entrypoint.sh
+
 
 ENTRYPOINT ["/entrypoint.sh"] 
