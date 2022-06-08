@@ -56,7 +56,12 @@ params="${params} --file $file"
 fi
 
 export OKTETO_DISABLE_SPINNER=1
-number=$(jq '[ .number ][0]' $GITHUB_EVENT_PATH)
+if [ "${GITHUB_EVENT_NAME}" = "pull_request" ]; then
+  number=$(jq '[ .number ][0]' $GITHUB_EVENT_PATH)
+elif [ "${GITHUB_EVENT_NAME}" = "repository_dispatch" ]; then
+  number=$(jq '[ .client_payload.pull_request.number ][0]' $GITHUB_EVENT_PATH)
+fi
+
 echo running: okteto preview deploy $name --scope $scope --branch="${branch}" --repository="${GITHUB_SERVER_URL}/${repository}" --sourceUrl="${GITHUB_SERVER_URL}/${repository}/pull/${number}" ${params} --wait
 ret=0
 okteto preview deploy $name --scope $scope --branch="${branch}" --repository="${GITHUB_SERVER_URL}/${repository}" --sourceUrl="${GITHUB_SERVER_URL}/${repository}/pull/${number}" ${params} --wait || ret=1
