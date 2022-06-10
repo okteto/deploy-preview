@@ -3,7 +3,7 @@ require "octokit"
 require "json"
 
 if ENV["GITHUB_EVENT_NAME"] != "pull_request" && ENV["GITHUB_EVENT_NAME"] != "repository_dispatch"
-    puts "This action only supports pull_request nor repository_dispatch events."
+    puts "This action only supports either pull_request or repository_dispatch events."
     exit(1)
 end
 
