@@ -2,8 +2,8 @@
 require "octokit"
 require "json"
 
-if ENV["GITHUB_EVENT_NAME"] != "pull_request"
-    puts "This action only supports pull_request events."
+if ENV["GITHUB_EVENT_NAME"] != "pull_request" && ENV["GITHUB_EVENT_NAME"] != "repository_dispatch"
+    puts "This action only supports either pull_request or repository_dispatch events."
     exit(1)
 end
 
@@ -17,7 +17,11 @@ repo = ENV["GITHUB_REPOSITORY"]
 
 json = File.read(ENV.fetch("GITHUB_EVENT_PATH"))
 event = JSON.parse(json)
-pr = event["number"]
+if ENV["GITHUB_EVENT_NAME"] == "pull_request"
+    pr = event["number"]
+else
+    pr = event["client_payload"]["pull_request"]["number"]
+end
 
 github = Octokit::Client.new(:access_token => ENV["GITHUB_TOKEN"])
 comments = github.issue_comments(repo, pr)
