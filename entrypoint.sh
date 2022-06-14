@@ -62,9 +62,9 @@ elif [ "${GITHUB_EVENT_NAME}" = "repository_dispatch" ]; then
   number=$(jq '[ .client_payload.pull_request.number ][0]' $GITHUB_EVENT_PATH)
 fi
 
-echo running: okteto preview deploy $name --scope $scope --branch="${branch}" --repository="${GITHUB_SERVER_URL}/${repository}" --sourceUrl="${GITHUB_SERVER_URL}/${repository}/pull/${number}" ${params} --wait
+echo running: okteto preview deploy $name --scope $scope --branch="${branch}" --repository="${GITHUB_SERVER_URL}/${repository}" --sourceUrl="${GITHUB_SERVER_URL}/${repository}/pull/${number}" ${params} --wait --log-level=debug
 ret=0
-okteto preview deploy $name --scope $scope --branch="${branch}" --repository="${GITHUB_SERVER_URL}/${repository}" --sourceUrl="${GITHUB_SERVER_URL}/${repository}/pull/${number}" ${params} --wait || ret=1
+okteto preview deploy $name --scope $scope --branch="${branch}" --repository="${GITHUB_SERVER_URL}/${repository}" --sourceUrl="${GITHUB_SERVER_URL}/${repository}/pull/${number}" ${params} --wait --log-level=debug || ret=1
 
 if [ ! -z $GITHUB_TOKEN ]; then
   withErrors="preview deployed with resource errors"
