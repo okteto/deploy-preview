@@ -56,9 +56,16 @@ params="${params} --file $file"
 fi
 
 export OKTETO_DISABLE_SPINNER=1
+echo $GITHUB_EVENT_NAME
 if [ "${GITHUB_EVENT_NAME}" = "pull_request" ]; then
+  echo "pull request detected"
+  echo $GITHUB_EVENT_PATH
+  echo cat $GITHUB_EVENT_PATH
   number=$(jq '[ .number ][0]' $GITHUB_EVENT_PATH)
 elif [ "${GITHUB_EVENT_NAME}" = "repository_dispatch" ]; then
+  echo "repository dispatch detected"
+  echo $GITHUB_EVENT_PATH
+  echo cat $GITHUB_EVENT_PATH
   number=$(jq '[ .client_payload.pull_request.number ][0]' $GITHUB_EVENT_PATH)
 fi
 
