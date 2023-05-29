@@ -5,7 +5,7 @@ RUN go env -w GO111MODULE=off
 RUN go get github.com/machinebox/graphql
 COPY message.go .
 RUN go build -o /message .
-RUN curl -L https://stedolan.github.io/jq/download/linux64/jq > /usr/bin/jq && chmod +x /usr/bin/jq
+RUN curl -L https://github.com/jqlang/jq/releases/download/jq-1.6/jq-linux64 > /usr/bin/jq && chmod +x /usr/bin/jq
 
 FROM ruby:3-slim-buster
 

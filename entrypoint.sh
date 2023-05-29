@@ -57,6 +57,7 @@ fi
 
 export OKTETO_DISABLE_SPINNER=1
 jq --version
+which jq
 if [ "${GITHUB_EVENT_NAME}" = "pull_request" ]; then
   number=$(jq '[ .number ][0]' $GITHUB_EVENT_PATH)
 elif [ "${GITHUB_EVENT_NAME}" = "repository_dispatch" ]; then
