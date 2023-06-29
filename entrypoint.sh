@@ -66,8 +66,12 @@ echo running: okteto preview deploy $name --scope $scope --branch="${branch}" --
 ret=0
 okteto preview deploy $name --scope $scope --branch="${branch}" --repository="${GITHUB_SERVER_URL}/${repository}" --sourceUrl="${GITHUB_SERVER_URL}/${repository}/pull/${number}" ${params} --wait || ret=1
 
-if [ ! -z $GITHUB_TOKEN ]; then
-  withErrors="preview deployed with resource errors"
+if [ -z "$number" ] || [ "$number" = "null" ]; then
+  echo "No pull-request defined, skipping notification."
+  exit 0
+fi
+
+if [ -n "$GITHUB_TOKEN" ]; then
   if [ $ret = 1 ]; then
     message=$(/message $name 1)
   else
