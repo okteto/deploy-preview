@@ -60,8 +60,6 @@ jobs:
 
     - name: "Deploy the preview environment"
       uses: okteto/deploy-preview@latest
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         name: dev-previews-cindylopez
 ```
@@ -96,10 +94,6 @@ jobs:
 
      - name: "Deploy the preview environment"
        uses: okteto/deploy-preview@latest
-       env:
-         OKTETO_URL: https://cloud.okteto.com
-         OKTETO_TOKEN: ${{ secrets.OKTETO_TOKEN }}
-         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
        with:
          name: dev-previews-cindylopez
          scope: global
