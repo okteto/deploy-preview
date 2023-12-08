@@ -1,18 +1,15 @@
-# GitHub Actions for Okteto Cloud
+# GitHub Actions for Okteto
 
-## Automate your development workflows using Github Actions and Okteto Cloud
+## Automate your development workflows using Github Actions and Okteto
 
-GitHub Actions gives you the flexibility to build an automated software development workflows. With GitHub Actions for Okteto Cloud you can create workflows to build, deploy and update your applications in [Okteto Cloud](https://cloud.okteto.com). Follow [this tutorial](https://okteto.com/docs/cloud/preview-environments/preview-environments-github/) for a full preview environment configuration sample.
+GitHub Actions gives you the flexibility to build automated software development workflows. With GitHub Actions for Okteto you can create workflows to build, deploy and update your applications in [Okteto](https://okteto.com).
+Follow [this tutorial](https://okteto.com/docs/cloud/preview-environments/preview-environments-github/) for a full preview environment configuration sample.
 
-Get started today with a [free Okteto Cloud account](https://cloud.okteto.com)!
+Try Okteto for free for 30 days, no credit card required. [Start your 30-day trial now](https://www.okteto.com/free-trial/)!
 
-## Github Action for Creating a Preview environment in Okteto Cloud
+## Github Action for Creating a Preview environment in Okteto
 
-You can use this action to create a preview environment in Okteto Cloud as part of your automated development workflow.
-
-The [Deploy Preview Environment](https://github.com/okteto/deploy-preview) action deploys your application based on the [Okteto Pipeline](https://www.okteto.com/docs/cloud/okteto-pipeline/) manifest present in your repository. If you've not set up an Okteto Pipeline, the action will analyze the source code of your repository, looking for clues on how to deploy your application. You can read more about this [here](https://www.okteto.com/docs/cloud/deploy-from-git/#prerequisites). 
-
-The application deployed by the Deploy Preview Environment action will be deployed and available under the "Previews" section on the [Okteto Cloud](https://www.okteto.com/docs/cloud/) dashboard, on [Okteto Cloud](https://cloud.okteto.com).
+You can use this action to create a preview environment in Okteto as part of your automated development workflow.
 
 ## Inputs
 
@@ -20,17 +17,13 @@ The application deployed by the Deploy Preview Environment action will be deploy
 
 **Required**  The name of the Okteto preview environment to create.
 
-> Remember that the preview environment name must have your github ID as a suffix.
-
 ### `timeout`
 
 The length of time to wait for completion. Values should contain a corresponding time unit e.g. 1s, 2m, 3h. If not specified it will use `5m`.
 
 ### `scope`
 
-The scope of the Okteto preview environment to create.
-
-> Available scopes are `personal` and `global` (defaults to `personal`). To create a preview environment with [global scope](https://okteto.com/docs/cloud/preview-environments/preview-environments-github/#preview-environments-for-okteto-enterprise-users) it is necessary to have administrator permissions. Global preview environments are accessible by all cluster members.
+The scope of the Okteto preview environment to create (defaults to `personal`).
 
 ### `variables`
 
@@ -59,8 +52,10 @@ jobs:
   devflow:
     runs-on: ubuntu-latest
     steps:
-    - uses: okteto/context@latest
+    - name: Context
+      uses: okteto/context@latest
       with:
+        url: https://okteto.example.com
         token: ${{ secrets.OKTETO_TOKEN }}
 
     - name: "Deploy the preview environment"
@@ -77,7 +72,7 @@ jobs:
 
  You can specify a custom certificate authority or a self-signed certificate by setting the `OKTETO_CA_CERT` environment variable. When this variable is set, the action will install the certificate in the container, and then execute the action.
 
- Use this option if you're using a private Certificate Authority or a self-signed certificate in your [Okteto Enterprise](http://okteto.com/enterprise) instance.  We recommend that you store the certificate as an [encrypted secret](https://docs.github.com/en/actions/reference/encrypted-secrets), and that you define the environment variable for the entire job, instead of doing it on every step.
+ Use this option if you're using a private Certificate Authority or a self-signed certificate in your [Okteto SH](https://www.okteto.com/docs/self-hosted/) instance.  We recommend that you store the certificate as an [encrypted secret](https://docs.github.com/en/actions/reference/encrypted-secrets), and that you define the environment variable for the entire job, instead of doing it on every step.
 
 
  ```yaml
@@ -93,6 +88,12 @@ jobs:
        OKTETO_CA_CERT: ${{ secrets.OKTETO_CA_CERT }}
 
      steps:
+     - name: Context
+       uses: okteto/context@latest
+       with:
+         url: https://okteto.example.com
+         token: ${{ secrets.OKTETO_TOKEN }}
+
      - name: "Deploy the preview environment"
        uses: okteto/deploy-preview@latest
        env:
