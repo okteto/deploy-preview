@@ -33,6 +33,10 @@ A list of variables to be used by the pipeline. If several variables are present
 
 Relative path within the repository to the manifest file (default to okteto-pipeline.yaml or .okteto/okteto-pipeline.yaml).
 
+### `branch`
+
+The branch to use for the preview environment (defaults to the branch that triggered the action).
+
 ## Environment Variables
 
 If the `GITHUB_TOKEN` environment variable is set, the action will share the URL of the preview environment with the pull request that triggered the action.

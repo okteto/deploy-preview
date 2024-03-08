@@ -17,6 +17,9 @@ inputs:
   file:
     description: "Path to the manifest file"
     required: false
+  branch:
+    description: "The branch to deploy"
+    required: false
 runs:
   using: "docker"
   image: "Dockerfile"
@@ -26,6 +29,7 @@ runs:
     - ${{ inputs.scope }}
     - ${{ inputs.variables }}
     - ${{ inputs.file }}
+    - ${{ inputs.branch }}
 branding:
   color: 'green'
   icon: 'grid'
