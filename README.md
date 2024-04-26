@@ -65,7 +65,8 @@ jobs:
     - name: "Deploy the preview environment"
       uses: okteto/deploy-preview@latest
       with:
-        name: dev-previews-cindylopez
+        name: dev-previews
+        scope: global
 ```
 
 ## Advanced usage
@@ -99,7 +100,7 @@ jobs:
      - name: "Deploy the preview environment"
        uses: okteto/deploy-preview@latest
        with:
-         name: dev-previews-cindylopez
+         name: dev-previews
          scope: global
          timeout: 15m
  ```
