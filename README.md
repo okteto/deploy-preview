@@ -37,6 +37,11 @@ Relative path within the repository to the manifest file (default to okteto-pipe
 
 The branch to use for the preview environment (defaults to the branch that triggered the action).
 
+### `debug`
+
+Enable debug logging. (defaults to false). 
+You can re-run a worflow and (enable debug logging from the dialog)[https://docs.github.com/actions/monitoring-and-troubleshooting-workflows/enabling-debug-logging].
+
 ## Environment Variables
 
 If the `GITHUB_TOKEN` environment variable is set, the action will share the URL of the preview environment with the pull request that triggered the action.
