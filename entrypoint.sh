@@ -65,7 +65,7 @@ fi
 
 if [ "$debug" = "true" ]; then
   debug="-l debug"
-elif [ "${ACTIONS_STEP_DEBUG}" = "true" ]; then
+elif [ "${RUNNER_DEBUG}" = "true" ]; then
   debug="-l debug"
 else
   debug=""
