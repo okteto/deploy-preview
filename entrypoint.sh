@@ -65,7 +65,9 @@ fi
 
 if [ "$debug" = "true" ]; then
   debug="-l debug"
-elif [ "${RUNNER_DEBUG}" = "true" ]; then
+elif [ "${RUNNER_DEBUG}" = "1" ]; then
+# https://docs.github.com/en/actions/monitoring-and-troubleshooting-workflows/enabling-debug-logging
+# https://docs.github.com/en/actions/learn-github-actions/variables#default-environment-variables
   debug="-l debug"
 else
   debug=""
