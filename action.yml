@@ -20,6 +20,9 @@ inputs:
   branch:
     description: "The branch to deploy"
     required: false
+  debug:
+    description: "Enable debug log level when running the action"
+    required: false
 runs:
   using: "docker"
   image: "Dockerfile"
@@ -30,6 +33,7 @@ runs:
     - ${{ inputs.variables }}
     - ${{ inputs.file }}
     - ${{ inputs.branch }}
+    - ${{ inputs.debug }}
 branding:
   color: 'green'
   icon: 'grid'
