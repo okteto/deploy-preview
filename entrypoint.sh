@@ -63,9 +63,15 @@ elif [ "${GITHUB_EVENT_NAME}" = "repository_dispatch" ]; then
   number=$(jq '[ .client_payload.pull_request.number ][0]' $GITHUB_EVENT_PATH)
 fi
 
-echo running: okteto preview deploy $name --scope $scope --branch="${branch}" --repository="${GITHUB_SERVER_URL}/${repository}" --sourceUrl="${GITHUB_SERVER_URL}/${repository}/pull/${number}" ${params} --wait
+if [ "$debug" = "true" ]; then
+  debug="-l debug"
+else
+  debug=""
+fi
+
+echo running: okteto preview deploy $name $debug --scope $scope --branch="${branch}" --repository="${GITHUB_SERVER_URL}/${repository}" --sourceUrl="${GITHUB_SERVER_URL}/${repository}/pull/${number}" ${params} --wait
 ret=0
-okteto preview deploy $name --scope $scope --branch="${branch}" --repository="${GITHUB_SERVER_URL}/${repository}" --sourceUrl="${GITHUB_SERVER_URL}/${repository}/pull/${number}" ${params} --wait || ret=1
+okteto preview deploy $name $debug --scope $scope --branch="${branch}" --repository="${GITHUB_SERVER_URL}/${repository}" --sourceUrl="${GITHUB_SERVER_URL}/${repository}/pull/${number}" ${params} --wait || ret=1
 
 if [ -z "$number" ] || [ "$number" = "null" ]; then
   echo "No pull-request defined, skipping notification."
