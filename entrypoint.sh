@@ -7,6 +7,7 @@ scope=$3
 variables=$4
 file=$5
 branch=$6
+debug=$7
 
 if [ -z $name ]; then
   echo "Preview environment name is required"
