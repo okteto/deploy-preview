@@ -37,10 +37,9 @@ Relative path within the repository to the manifest file (default to okteto-pipe
 
 The branch to use for the preview environment (defaults to the branch that triggered the action).
 
-### `debug`
+### `log-level`
 
-Enable debug logging. (defaults to false). 
-You can re-run a worflow and (enable debug logging from the dialog)[https://docs.github.com/actions/monitoring-and-troubleshooting-workflows/enabling-debug-logging].
+Log level used. Supported values are: `debug`, `info`, `warn`, `error`. (defaults to warn)
 
 ## Environment Variables
 

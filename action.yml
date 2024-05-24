@@ -20,8 +20,8 @@ inputs:
   branch:
     description: "The branch to deploy"
     required: false
-  debug:
-    description: "Enable debug log level when running the action"
+  log-level:
+    description: "Log level string. Valid options are debug, info, warn, error"
     required: false
 runs:
   using: "docker"
@@ -33,7 +33,7 @@ runs:
     - ${{ inputs.variables }}
     - ${{ inputs.file }}
     - ${{ inputs.branch }}
-    - ${{ inputs.debug }}
+    - ${{ inputs.log-level }}
 branding:
   color: 'green'
   icon: 'grid'
