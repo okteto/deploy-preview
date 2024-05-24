@@ -7,7 +7,7 @@ scope=$3
 variables=$4
 file=$5
 branch=$6
-debug=$7
+log_level=$7
 
 if [ -z $name ]; then
   echo "Preview environment name is required"
@@ -63,19 +63,24 @@ elif [ "${GITHUB_EVENT_NAME}" = "repository_dispatch" ]; then
   number=$(jq '[ .client_payload.pull_request.number ][0]' $GITHUB_EVENT_PATH)
 fi
 
-if [ "$debug" = "true" ]; then
-  debug="-l debug"
-elif [ "${RUNNER_DEBUG}" = "1" ]; then
-# https://docs.github.com/en/actions/monitoring-and-troubleshooting-workflows/enabling-debug-logging
-# https://docs.github.com/en/actions/learn-github-actions/variables#default-environment-variables
-  debug="-l debug"
-else
-  debug=""
+if [ ! -z "$log_level" ]; then
+  if [ "$log_level" = "debug" ] || [ "$log_level" = "info" ] || [ "$log_level" = "warn" ] || [ "$log_level" = "error" ] ; then
+    log_level="--log-level ${log_level}"
+  else
+    echo "log-level supported: debug, info, warn, error"
+    exit 1
+  fi
 fi
 
-echo running: okteto preview deploy $name $debug --scope $scope --branch="${branch}" --repository="${GITHUB_SERVER_URL}/${repository}" --sourceUrl="${GITHUB_SERVER_URL}/${repository}/pull/${number}" ${params} --wait
+# https://docs.github.com/en/actions/monitoring-and-troubleshooting-workflows/enabling-debug-logging
+# https://docs.github.com/en/actions/learn-github-actions/variables#default-environment-variables
+if [ "${RUNNER_DEBUG}" = "1" ]; then
+  log_level="--log-level debug"
+fi
+
+echo running: okteto preview deploy $name $log_level --scope $scope --branch="${branch}" --repository="${GITHUB_SERVER_URL}/${repository}" --sourceUrl="${GITHUB_SERVER_URL}/${repository}/pull/${number}" ${params} --wait
 ret=0
-okteto preview deploy $name $debug --scope $scope --branch="${branch}" --repository="${GITHUB_SERVER_URL}/${repository}" --sourceUrl="${GITHUB_SERVER_URL}/${repository}/pull/${number}" ${params} --wait || ret=1
+okteto preview deploy $name $log_level --scope $scope --branch="${branch}" --repository="${GITHUB_SERVER_URL}/${repository}" --sourceUrl="${GITHUB_SERVER_URL}/${repository}/pull/${number}" ${params} --wait || ret=1
 
 if [ -z "$number" ] || [ "$number" = "null" ]; then
   echo "No pull-request defined, skipping notification."
