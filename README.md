@@ -39,7 +39,7 @@ The branch to use for the preview environment (defaults to the branch that trigg
 
 ### `log-level`
 
-Log level used. Supported values are: `debug`, `info`, `warn`, `error`. (defaults to warn)
+Log level used. Supported values are: `debug`, `info`, `warn`, `error`. (defaults to `warn`)
 
 ## Environment Variables
 
