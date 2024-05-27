@@ -37,10 +37,6 @@ Relative path within the repository to the manifest file (default to okteto-pipe
 
 The branch to use for the preview environment (defaults to the branch that triggered the action).
 
-### `log-level`
-
-Log level used. Supported values are: `debug`, `info`, `warn`, `error`. (defaults to `warn`)
-
 ## Environment Variables
 
 If the `GITHUB_TOKEN` environment variable is set, the action will share the URL of the preview environment with the pull request that triggered the action.

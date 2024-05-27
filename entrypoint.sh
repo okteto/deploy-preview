@@ -7,7 +7,6 @@ scope=$3
 variables=$4
 file=$5
 branch=$6
-log_level=$7
 
 if [ -z $name ]; then
   echo "Preview environment name is required"
@@ -63,24 +62,9 @@ elif [ "${GITHUB_EVENT_NAME}" = "repository_dispatch" ]; then
   number=$(jq '[ .client_payload.pull_request.number ][0]' $GITHUB_EVENT_PATH)
 fi
 
-if [ ! -z "$log_level" ]; then
-  if [ "$log_level" = "debug" ] || [ "$log_level" = "info" ] || [ "$log_level" = "warn" ] || [ "$log_level" = "error" ] ; then
-    log_level="--log-level ${log_level}"
-  else
-    echo "unsupported log-level ${log_level}, supported options are: debug, info, warn, error"
-    exit 1
-  fi
-fi
-
-# https://docs.github.com/en/actions/monitoring-and-troubleshooting-workflows/enabling-debug-logging
-# https://docs.github.com/en/actions/learn-github-actions/variables#default-environment-variables
-if [ "${RUNNER_DEBUG}" = "1" ]; then
-  log_level="--log-level debug"
-fi
-
-echo running: okteto preview deploy $name $log_level --scope $scope --branch="${branch}" --repository="${GITHUB_SERVER_URL}/${repository}" --sourceUrl="${GITHUB_SERVER_URL}/${repository}/pull/${number}" ${params} --wait
+echo running: okteto preview deploy $name --scope $scope --branch="${branch}" --repository="${GITHUB_SERVER_URL}/${repository}" --sourceUrl="${GITHUB_SERVER_URL}/${repository}/pull/${number}" ${params} --wait
 ret=0
-okteto preview deploy $name $log_level --scope $scope --branch="${branch}" --repository="${GITHUB_SERVER_URL}/${repository}" --sourceUrl="${GITHUB_SERVER_URL}/${repository}/pull/${number}" ${params} --wait || ret=1
+okteto preview deploy $name --scope $scope --branch="${branch}" --repository="${GITHUB_SERVER_URL}/${repository}" --sourceUrl="${GITHUB_SERVER_URL}/${repository}/pull/${number}" ${params} --wait || ret=1
 
 if [ -z "$number" ] || [ "$number" = "null" ]; then
   echo "No pull-request defined, skipping notification."
