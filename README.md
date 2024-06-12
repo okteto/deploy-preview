@@ -23,7 +23,7 @@ The length of time to wait for completion. Values should contain a corresponding
 
 ### `scope`
 
-The scope of the Okteto preview environment to create (defaults to `personal`).
+The scope of the Okteto preview environment to create. Allowed values are `personal` or `global` (defaults to `global`).
 
 ### `variables`
 
