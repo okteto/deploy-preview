@@ -15,7 +15,7 @@ if [ -z $name ]; then
 fi
 
 if [ -z $scope ]; then
-  scope=personal
+  scope=global
 fi
 
 if [ ! -z "$OKTETO_CA_CERT" ]; then
