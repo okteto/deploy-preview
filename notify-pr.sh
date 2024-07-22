@@ -13,6 +13,7 @@ if !message = ARGV[1]
 end
 
 message = ARGV[0]
+preview_name = ARGV[2]
 repo = ENV["GITHUB_REPOSITORY"]
 
 json = File.read(ENV.fetch("GITHUB_EVENT_PATH"))
@@ -25,7 +26,9 @@ end
 
 github = Octokit::Client.new(:access_token => ENV["GITHUB_TOKEN"])
 comments = github.issue_comments(repo, pr)
-comment = comments.find { |c| c["body"].start_with?("Your preview environment") }
+comment = comments.find do |c|
+    c["body"].start_with?("Your preview environment") &&
+    c["body"].include?(preview_name)
 
 if comment
     puts "Message already exists in the PR. Updating"
