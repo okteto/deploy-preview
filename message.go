@@ -34,7 +34,7 @@ func main() {
 		return
 	}
 
-	previewURL := fmt.Sprintf("%s/#/previews/%s", oktetoURL, previewName)
+	previewURL := fmt.Sprintf("%s/previews/%s", oktetoURL, previewName)
 
 	var firstLine string
 	if previewCommandExitCode == "0" {
