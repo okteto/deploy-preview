@@ -29,6 +29,7 @@ comments = github.issue_comments(repo, pr)
 comment = comments.find do |c|
     c["body"].start_with?("Your preview environment") &&
     c["body"].include?("[#{preview_name}]")
+end
 
 if comment
     puts "Message already exists in the PR. Updating"
