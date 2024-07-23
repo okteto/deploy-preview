@@ -28,7 +28,7 @@ github = Octokit::Client.new(:access_token => ENV["GITHUB_TOKEN"])
 comments = github.issue_comments(repo, pr)
 comment = comments.find do |c|
     c["body"].start_with?("Your preview environment") &&
-    c["body"].include?(preview_name)
+    c["body"].include?("[#{preview_name}]")
 
 if comment
     puts "Message already exists in the PR. Updating"
