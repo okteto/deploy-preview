@@ -1,21 +1,16 @@
 FROM okteto/okteto:latest as okteto
 
-FROM golang:1.16 as message-builder
-RUN go env -w GO111MODULE=off
-RUN go get github.com/machinebox/graphql
-COPY message.go .
-RUN go build -o /message .
-RUN curl -L https://github.com/jqlang/jq/releases/download/jq-1.6/jq-linux64 > /usr/bin/jq && chmod +x /usr/bin/jq
+FROM golang:1.22 as builder
+WORKDIR /app
+ENV GO111MODULE=ON
+COPY . .
+RUN go build -o /deploy-preview .
 
-FROM ruby:3-slim-buster
+FROM gcr.io/distroless/static-debian11
 
-RUN gem install octokit faraday-retry
+COPY --from=builder /deploy-preview /deploy-preview
+COPY --from=okteto /usr/local/bin/okteto /okteto
 
-COPY notify-pr.sh /notify-pr.sh
-RUN chmod +x notify-pr.sh
-COPY --from=message-builder /usr/bin/jq /usr/bin/jq
-COPY entrypoint.sh /entrypoint.sh
-COPY --from=message-builder /message /message
-COPY --from=okteto /usr/local/bin/okteto /usr/local/bin/okteto
+ENV PATH=/
 
-ENTRYPOINT ["/entrypoint.sh"] 
+ENTRYPOINT ["/deploy-preview"]
