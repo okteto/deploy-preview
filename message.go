@@ -163,7 +163,7 @@ func getOktetoURL() (*url.URL, error) {
 }
 
 func getEndpoints(name string) ([]*url.URL, error) {
-	cmd := exec.Command("/home/hsadiq/.zinit/plugins/okteto---okteto/okteto", "preview", "endpoints", name, "-o", "json")
+	cmd := exec.Command("okteto", "preview", "endpoints", name, "-o", "json")
 	cmd.Env = os.Environ()
 	o, err := cmd.CombinedOutput()
 	if err != nil {

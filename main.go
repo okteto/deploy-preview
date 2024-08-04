@@ -178,7 +178,7 @@ func deployPreview(opts DeployOptions) error {
 
 	args = append(args, "--wait")
 
-	cmd := exec.Command("echo", args...)
+	cmd := exec.Command("okteto", args...)
 	cmd.Stdin = os.Stdin
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr

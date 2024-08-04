@@ -62,7 +62,6 @@ func newGitHub() (ciInfo, error) {
 
 	switch os.Getenv("GITHUB_EVENT_NAME") {
 	case "pull_request":
-
 		gh.prNumber = payload.Number
 		gh.defaultBranch = os.Getenv("GITHUB_HEAD_REF")
 	case "repository_dispatch":
