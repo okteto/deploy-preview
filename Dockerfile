@@ -2,7 +2,7 @@ FROM okteto/okteto:latest as okteto
 
 FROM golang:1.22 as builder
 WORKDIR /app
-ENV GO111MODULE=ON
+ARG GO111MODULE=on
 COPY . .
 RUN go build -o /deploy-preview .
 
