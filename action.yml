@@ -23,17 +23,20 @@ inputs:
   log-level:
     description: "Log level string. Valid options are debug, info, warn, error"
     required: false
+  comment:
+    description: "Specify custom comment. Prefix with @ to read from a file."
+    required: false
 runs:
   using: "docker"
   image: "Dockerfile"
   args:
     - ${{ inputs.name }}
-    - ${{ inputs.timeout }}
-    - ${{ inputs.scope }}
-    - ${{ inputs.variables }}
-    - ${{ inputs.file }}
-    - ${{ inputs.branch }}
-    - ${{ inputs.log-level }}
+    - --timeout=${{ inputs.timeout }}
+    - --scope=${{ inputs.scope }}
+    - --variables=${{ inputs.variables }}
+    - --file=${{ inputs.file }}
+    - --branch=${{ inputs.branch }}
+    - --log-level=${{ inputs.log-level }}
 branding:
   color: 'green'
   icon: 'grid'
