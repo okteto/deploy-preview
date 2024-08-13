@@ -33,7 +33,7 @@ runs:
     - ${{ inputs.name }}
     - --timeout=${{ inputs.timeout }}
     - --scope=${{ inputs.scope }}
-    - --variables=${{ inputs.variables }}
+    - --var=${{ inputs.variables }}
     - --file=${{ inputs.file }}
     - --branch=${{ inputs.branch }}
     - --log-level=${{ inputs.log-level }}

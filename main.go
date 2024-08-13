@@ -2,9 +2,9 @@ package main
 
 import (
 	"errors"
-	"flag"
 	"fmt"
 	"github.com/hoshsadiq/godotenv"
+	flag "github.com/spf13/pflag"
 	"log"
 	"os"
 	"os/exec"
@@ -31,6 +31,10 @@ func (i *sliceString) Set(value string) error {
 		*i = append(*i, fmt.Sprintf("%s=%s", k, v))
 	}
 	return nil
+}
+
+func (i *sliceString) Type() string {
+	return "var"
 }
 
 type DeployOptions struct {
@@ -111,8 +115,7 @@ func main() {
 }
 
 func notify(ci ciInfo, message string) error {
-	switch {
-	case os.Getenv("GITHUB_ACTIONS") == "true":
+	if ci != nil {
 		return ci.Notify(message)
 	}
 
@@ -157,7 +160,7 @@ func deployPreview(opts DeployOptions) error {
 	args := []string{"preview", "deploy", opts.name}
 	args = append(args, fmt.Sprintf("--scope=%s", opts.scope))
 	args = append(args, fmt.Sprintf("--branch=%s", opts.branch))
-	args = append(args, fmt.Sprintf("--repository=%s", opts.ci.Repository()))
+	args = append(args, fmt.Sprintf("--repository=%s", opts.ci.RepositoryURL()))
 	args = append(args, fmt.Sprintf("--sourceUrl=%s", opts.ci.SourceURL()))
 
 	if opts.timeout > 0 {

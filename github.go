@@ -14,7 +14,11 @@ import (
 )
 
 type GitHubEvent struct {
-	Number        int `json:"number"`
+	Number     int `json:"number"`
+	Repository struct {
+		HtmlURL  string `json:"html_url"`
+		FullName string `json:"full_name"`
+	} `json:"repository"`
 	ClientPayload struct {
 		PullRequest struct {
 			Number int `json:"number"`
@@ -28,14 +32,14 @@ type GitHubComment struct {
 }
 
 type github struct {
-	repository    string
-	sourceURL     string
-	prNumber      int
-	defaultBranch string
+	repositoryURL  string
+	prNumber       int
+	defaultBranch  string
+	repositoryName string
 }
 
 type ciInfo interface {
-	Repository() string
+	RepositoryURL() string
 	SourceURL() string
 	DefaultBranch() string
 	Notify(message string) error
@@ -64,23 +68,24 @@ func newGitHub() (ciInfo, error) {
 	case "pull_request":
 		gh.prNumber = payload.Number
 		gh.defaultBranch = os.Getenv("GITHUB_HEAD_REF")
+		gh.repositoryURL = payload.Repository.HtmlURL
+		gh.repositoryName = payload.Repository.FullName
 	case "repository_dispatch":
 		gh.prNumber = payload.ClientPayload.PullRequest.Number
 		gh.defaultBranch = strings.TrimPrefix(os.Getenv("GITHUB_REF"), "refs/heads/")
+		gh.repositoryURL = payload.Repository.HtmlURL
+		gh.repositoryName = payload.Repository.FullName
 	}
-
-	gh.repository = fmt.Sprintf("%s/%s", os.Getenv("GITHUB_SERVER_URL"), os.Getenv("GITHUB_REPOSITORY"))
-	gh.sourceURL = fmt.Sprintf("%s/%s", gh.repository, gh.prNumber)
 
 	return gh, nil
 }
 
-func (gh *github) Repository() string {
-	return gh.repository
+func (gh *github) RepositoryURL() string {
+	return gh.repositoryURL
 }
 
 func (gh *github) SourceURL() string {
-	return gh.sourceURL
+	return fmt.Sprintf("%s/pulls/%d", gh.repositoryURL, gh.prNumber)
 }
 
 func (gh *github) DefaultBranch() string {
@@ -93,14 +98,13 @@ func (gh *github) PRNumber() int {
 
 func (gh *github) Notify(message string) error {
 	githubToken := os.Getenv("GITHUB_TOKEN")
-	githubRepository := os.Getenv("GITHUB_REPOSITORY")
 
 	if githubToken == "" {
 		log.Println("failed to set message as no GITHUB_TOKEN found")
 		return errors.New("missing GITHUB_TOKEN")
 	}
 
-	resp, err := gh.callGitHub(githubToken, "GET", githubRepository, nil, "issues", fmt.Sprintf("%d", gh.prNumber), "comments")
+	resp, err := gh.callGitHub(githubToken, "GET", gh.repositoryName, nil, "issues", fmt.Sprintf("%d", gh.prNumber), "comments")
 	if err != nil {
 		return fmt.Errorf("failed to retrieve PR comments: %s", err)
 	}
@@ -124,7 +128,7 @@ func (gh *github) Notify(message string) error {
 		return err
 	}
 	if comment == nil {
-		_, err = gh.callGitHub(githubToken, "POST", githubRepository, msgBodyBuf, "issues", fmt.Sprintf("%d", gh.prNumber), "comments")
+		_, err = gh.callGitHub(githubToken, "POST", gh.repositoryName, msgBodyBuf, "issues", fmt.Sprintf("%d", gh.prNumber), "comments")
 		if err != nil {
 			return fmt.Errorf("failed to create new comment: %s", err)
 		}
@@ -132,7 +136,7 @@ func (gh *github) Notify(message string) error {
 	}
 
 	fmt.Println("Message already exists in the PR. Updating")
-	_, err = gh.callGitHub(githubToken, "PATCH", githubRepository, msgBodyBuf, "issues", "comments", fmt.Sprintf("%d", comment.ID))
+	_, err = gh.callGitHub(githubToken, "PATCH", gh.repositoryName, msgBodyBuf, "issues", "comments", fmt.Sprintf("%d", comment.ID))
 	if err != nil {
 		return fmt.Errorf("failed to update comment: %s", err)
 	}
