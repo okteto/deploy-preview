@@ -4,7 +4,7 @@ FROM golang:1.22 as builder
 WORKDIR /app
 ARG GO111MODULE=on
 COPY . .
-RUN go build -o /deploy-preview .
+RUN CGO_ENABLED=0 go build -o /deploy-preview .
 
 FROM gcr.io/distroless/static-debian11
 
