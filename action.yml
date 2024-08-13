@@ -37,6 +37,7 @@ runs:
     - --file=${{ inputs.file }}
     - --branch=${{ inputs.branch }}
     - --log-level=${{ inputs.log-level }}
+    - --comment=${{ inputs.comment }}
 branding:
   color: 'green'
   icon: 'grid'

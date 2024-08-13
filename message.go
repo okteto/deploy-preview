@@ -81,7 +81,7 @@ func (p *Endpoint) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func generateMessage(previewName string, previewSucceeded bool, commentTemplate string) (string, error) {
+func generateMessage(previewSucceeded bool, previewName string, commentTemplate string) (string, error) {
 	oktetoURL, err := getOktetoURL()
 	if err != nil {
 		return "", err

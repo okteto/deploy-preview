@@ -103,10 +103,7 @@ func main() {
 	}
 	var success = err == nil
 
-	message, err := generateMessage(opts.name, success, opts.comment)
-	exitIfErr(err)
-
-	err = notify(ci, message)
+	err = notify(ci, success, opts.name, opts.comment)
 	exitIfErr(err)
 
 	if !success {
@@ -114,13 +111,15 @@ func main() {
 	}
 }
 
-func notify(ci ciInfo, message string) error {
-	if ci != nil {
-		return ci.Notify(message)
+func notify(ci ciInfo, success bool, name string, comment string) error {
+	if ci == nil {
+		log.Printf("Not notifying anything, CI not supported")
 	}
 
-	log.Printf("Not notifying anything, CI not supported")
-	return nil
+	message, err := generateMessage(success, name, comment)
+	exitIfErr(err)
+
+	return ci.Notify(message)
 }
 
 func getCIInfo() (ciInfo, error) {
