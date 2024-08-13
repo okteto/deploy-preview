@@ -147,6 +147,7 @@ func validateInput(flagSet *flag.FlagSet, opts *DeployOptions) error {
 		return errors.New("preview environment name is required")
 	}
 
+	opts.branch = opts.ci.DefaultBranch()
 	if opts.branch == "" {
 		// this essentially means that retrieveDefaultBranch was unable to find a value
 		return errors.New("failed to detect branch")

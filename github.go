@@ -14,9 +14,9 @@ import (
 )
 
 type GitHubEvent struct {
-	Number      int `json:"number"`
 	PullRequest struct {
-		Head struct {
+		Number int `json:"number"`
+		Head   struct {
 			Ref string `json:"ref"`
 		} `json:"head"`
 	} `json:"pull_request"`
@@ -70,8 +70,8 @@ func newGitHub() (ciInfo, error) {
 	gh := &github{}
 
 	switch os.Getenv("GITHUB_EVENT_NAME") {
-	case "pull_request":
-		gh.prNumber = payload.Number
+	case "pull_request", "pull_request_target":
+		gh.prNumber = payload.PullRequest.Number
 		gh.defaultBranch = payload.PullRequest.Head.Ref
 		gh.repositoryURL = payload.Repository.HtmlURL
 		gh.repositoryName = payload.Repository.FullName
