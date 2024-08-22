@@ -90,7 +90,7 @@ func (gh *github) RepositoryURL() string {
 }
 
 func (gh *github) SourceURL() string {
-	return fmt.Sprintf("%s/pulls/%d", gh.repositoryURL, gh.prNumber)
+	return fmt.Sprintf("%s/pull/%d", gh.repositoryURL, gh.prNumber)
 }
 
 func (gh *github) DefaultBranch() string {
