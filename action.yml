@@ -14,11 +14,14 @@ inputs:
   variables:
     description: 'Variables to be used by the pipeline. If several variables are present, they should be separated by commas e.g. VAR1=VAL1,VAR2=VAL2,VAR3=VAL3'
     required: false
-  file:
-    description: "Path to the manifest file"
-    required: false
+  repository:
+    description: "The repository to deploy"
+    required: false    
   branch:
     description: "The branch to deploy"
+    required: false
+  file:
+    description: "Path to the manifest file"
     required: false
   log-level:
     description: "Log level string. Valid options are debug, info, warn, error"
@@ -31,8 +34,9 @@ runs:
     - ${{ inputs.timeout }}
     - ${{ inputs.scope }}
     - ${{ inputs.variables }}
-    - ${{ inputs.file }}
+    - ${{ inputs.repository }}
     - ${{ inputs.branch }}
+    - ${{ inputs.file }}
     - ${{ inputs.log-level }}
 branding:
   color: 'green'

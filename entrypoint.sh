@@ -5,9 +5,10 @@ name=$1
 timeout=$2
 scope=$3
 variables=$4
-file=$5
+repository=$5
 branch=$6
-log_level=$7
+file=$7
+log_level=$8
 
 if [ -z $name ]; then
   echo "Preview environment name is required"
@@ -37,7 +38,9 @@ if [ -z "$branch" ]; then
   exit 1
 fi
 
-repository=$GITHUB_REPOSITORY
+if [ -z $repository ]; then
+  repository=$GITHUB_REPOSITORY
+fi
 
 if [ ! -z $timeout ]; then
 params="${params} --timeout=$timeout"
