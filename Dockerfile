@@ -11,6 +11,8 @@ FROM ruby:3-slim-buster
 
 RUN gem install octokit faraday-retry
 
+USER 0
+
 COPY notify-pr.sh /notify-pr.sh
 RUN chmod +x notify-pr.sh
 COPY --from=message-builder /usr/bin/jq /usr/bin/jq
