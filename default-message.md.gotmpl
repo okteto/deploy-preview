@@ -1,0 +1,7 @@
+Your preview environment [{{ .PreviewName }}]({{ .PreviewURL }}) has been deployed
+{{- if ne .PreviewSuccess true }} :warning::rotating_light: **but encountered errors** :rotating_light::warning:{{ end }}.
+
+Preview environment endpoint is available at:
+{{ range $index, $url := .EndpointsMap -}}
+ * [{{ $index }}]({{ $url }})
+{{ end }}
