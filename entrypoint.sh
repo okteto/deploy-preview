@@ -79,7 +79,7 @@ okteto preview deploy $name $log_level --scope $scope --branch="${branch}" --rep
 
 if [ -z "$number" ] || [ "$number" = "null" ]; then
   echo "No pull-request defined, skipping notification."
-  exit 0
+  exit $ret
 fi
 
 if [ -n "$GITHUB_TOKEN" ]; then
