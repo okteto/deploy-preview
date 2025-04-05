@@ -3,7 +3,6 @@ package main
 import (
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -18,7 +17,7 @@ type context struct {
 	Name string `json:"name"`
 }
 
-//Endpoint represents an Okteto statefulset
+// Endpoint represents an Okteto statefulset
 type Endpoint struct {
 	URL     string `json:"url"`
 	Divert  bool   `json:"divert"`
@@ -62,7 +61,7 @@ func main() {
 
 func getOktetoURL() (string, error) {
 	contextsPath := filepath.Join(os.Getenv("HOME"), ".okteto", "context", "config.json")
-	b, err := ioutil.ReadFile(contextsPath)
+	b, err := os.ReadFile(contextsPath)
 	if err != nil {
 		return "", err
 	}
