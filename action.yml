@@ -23,6 +23,10 @@ inputs:
   log-level:
     description: "Log level string. Valid options are debug, info, warn, error"
     required: false
+  notify-pr:
+    description: "Notify the pull request when the preview environment is created"
+    required: false
+    default: "yes"
 runs:
   using: "docker"
   image: "Dockerfile"
@@ -34,6 +38,7 @@ runs:
     - ${{ inputs.file }}
     - ${{ inputs.branch }}
     - ${{ inputs.log-level }}
+    - ${{ inputs.notify-pr}}
 branding:
   color: 'green'
   icon: 'grid'

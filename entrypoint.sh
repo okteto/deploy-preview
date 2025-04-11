@@ -8,6 +8,7 @@ variables=$4
 file=$5
 branch=$6
 log_level=$7
+notify_pr=$8
 
 if [ -z $name ]; then
   echo "Preview environment name is required"
@@ -88,7 +89,9 @@ if [ -n "$GITHUB_TOKEN" ]; then
   else
     message=$(/message $name 0)
   fi
-  /notify-pr.sh "$message" $GITHUB_TOKEN $name
+  if [ "${notify_pr}" = "yes" ]; then
+    /notify-pr.sh "$message" $GITHUB_TOKEN $name
+  fi
 fi
 
 if [ $ret = 1 ]; then
