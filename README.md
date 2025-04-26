@@ -39,7 +39,7 @@ Log level used. Supported values are: `debug`, `info`, `warn`, `error`. (default
 
 ## Environment Variables
 
-If the `GITHUB_TOKEN` environment variable is set, the action will share the URL of the preview environment with the pull request that triggered the action.
+If the `GITHUB_TOKEN` environment variable is set, this action will automatically post a comment on the Pull Request that triggered it, including the preview environment URL and its available endpoints.
 
 ## Example usage
 
@@ -68,8 +68,10 @@ jobs:
 
     - name: "Deploy the preview environment"
       uses: okteto/deploy-preview@latest
+      env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        name: dev-previews
+        name: dev-previews-${{ github.event.number }}
 ```
 
 ## Advanced usage
