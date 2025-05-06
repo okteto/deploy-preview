@@ -1,11 +1,13 @@
 FROM okteto/okteto:master as okteto
 
-FROM golang:1.16 as message-builder
-RUN go env -w GO111MODULE=off
-RUN go get github.com/machinebox/graphql
+FROM golang:1.24 as message-builder
+RUN curl -L https://github.com/jqlang/jq/releases/download/jq-1.7.1/jq-linux64 > /usr/bin/jq && \
+    chmod +x /usr/bin/jq
+
+COPY go.mod .
 COPY message.go .
 RUN go build -o /message .
-RUN curl -L https://github.com/jqlang/jq/releases/download/jq-1.6/jq-linux64 > /usr/bin/jq && chmod +x /usr/bin/jq
+
 
 FROM ruby:3-slim-buster
 
