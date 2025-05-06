@@ -4,6 +4,7 @@ FROM golang:1.24 as message-builder
 RUN curl -L https://github.com/jqlang/jq/releases/download/jq-1.7.1/jq-linux64 > /usr/bin/jq && \
     chmod +x /usr/bin/jq
 
+COPY go.mod .
 COPY message.go .
 RUN go build -o /message .
 
