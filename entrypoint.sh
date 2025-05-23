@@ -8,6 +8,7 @@ variables=$4
 file=$5
 branch=$6
 log_level=$7
+dependencies=$8
 
 if [ -z $name ]; then
   echo "Preview environment name is required"
@@ -54,6 +55,12 @@ fi
 
 if [ ! -z "$file" ]; then
 params="${params} --file $file"
+fi
+
+if [ "$dependencies" = "false" ]; then
+  params="${params} --dependencies=false"
+elif [ "$dependencies" = "true" ]; then
+  params="${params} --dependencies"
 fi
 
 export OKTETO_DISABLE_SPINNER=1

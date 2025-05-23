@@ -23,6 +23,9 @@ inputs:
   log-level:
     description: "Log level string. Valid options are debug, info, warn, error"
     required: false
+  dependencies:
+    description: "Force deployment of repositories in the 'dependencies' section"
+    required: false
 runs:
   using: "docker"
   image: "Dockerfile"
@@ -34,6 +37,7 @@ runs:
     - ${{ inputs.file }}
     - ${{ inputs.branch }}
     - ${{ inputs.log-level }}
+    - ${{ inputs.dependencies }}
 branding:
   color: 'green'
   icon: 'grid'
