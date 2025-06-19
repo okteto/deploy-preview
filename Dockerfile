@@ -12,7 +12,7 @@ RUN go build -o /message .
 
 FROM ruby:3-slim-buster
 
-RUN gem install octokit:9.2.0 faraday-retry:2.2.1
+RUN gem install octokit:10.0.0 faraday-retry:2.3.2
 
 COPY notify-pr.sh /notify-pr.sh
 RUN chmod +x /notify-pr.sh
