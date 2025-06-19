@@ -113,3 +113,22 @@ jobs:
         name: dev-previews
         timeout: 15m
 ```
+
+## Development
+
+### Dockerfile Validation
+
+This repository includes automated validation for the Dockerfile to ensure it always builds successfully:
+
+- **GitHub Action**: The `.github/workflows/dockerfile-validation.yml` workflow automatically runs on every push and pull request that modifies the Dockerfile
+- **Local Validation**: Use the `validate-dockerfile.sh` script to test the Dockerfile locally before pushing:
+  ```bash
+  ./validate-dockerfile.sh
+  ```
+
+The validation includes:
+- Dockerfile linting with [hadolint](https://github.com/hadolint/hadolint)
+- Building the Docker image
+- Testing that the container runs successfully
+- Verifying that required binaries are present
+- Checking that the entrypoint is executable
