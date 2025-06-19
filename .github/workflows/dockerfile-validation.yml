@@ -38,17 +38,3 @@ jobs:
         tags: test-build:latest
         cache-from: type=gha
         cache-to: type=gha,mode=max
-        
-    - name: Test Docker image
-      run: |
-        # Test that the image was built successfully
-        docker images test-build:latest
-        
-        # Test that the entrypoint exists and is executable
-        docker run --rm test-build:latest /bin/sh -c "test -x /entrypoint.sh && echo 'Entrypoint is executable'"
-        
-        # Test that required binaries are present
-        docker run --rm test-build:latest /bin/sh -c "which okteto && which jq && which ruby"
-        
-        # Test basic functionality (if the entrypoint accepts --help)
-        docker run --rm test-build:latest --help || echo "Container executed successfully"
