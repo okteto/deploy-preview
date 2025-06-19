@@ -1,6 +1,6 @@
-FROM okteto/okteto:master as okteto
+FROM okteto/okteto:master AS okteto
 
-FROM golang:1.24 as message-builder
+FROM golang:1.24 AS message-builder
 RUN curl -L https://github.com/jqlang/jq/releases/download/jq-1.7.1/jq-linux64 > /usr/bin/jq && \
     chmod +x /usr/bin/jq
 
