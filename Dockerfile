@@ -4,6 +4,7 @@ FROM golang:1.24 AS message-builder
 RUN curl -L https://github.com/jqlang/jq/releases/download/jq-1.7.1/jq-linux64 > /usr/bin/jq && \
     chmod +x /usr/bin/jq
 
+WORKDIR /app
 COPY go.mod .
 COPY message.go .
 RUN go build -o /message .
@@ -11,7 +12,7 @@ RUN go build -o /message .
 
 FROM ruby:3-slim-buster
 
-RUN gem install octokit faraday-retry
+RUN gem install octokit:9.2.0 faraday-retry:2.2.1
 
 COPY notify-pr.sh /notify-pr.sh
 RUN chmod +x /notify-pr.sh
