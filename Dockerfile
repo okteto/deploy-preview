@@ -20,4 +20,4 @@ COPY entrypoint.sh /entrypoint.sh
 COPY --from=message-builder /message /message
 COPY --from=okteto /usr/local/bin/okteto /usr/local/bin/okteto
 
-ENTRYPOINT ["/entrypoint.sh"] 
+ENTRYPOINT ["/entrypoint.sh"]
