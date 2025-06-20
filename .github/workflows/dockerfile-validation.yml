@@ -2,12 +2,12 @@ name: Dockerfile Validation
 
 on:
   push:
-    branches: [ main, master ]
+    branches: [ main ]
     paths:
       - 'Dockerfile'
       - '.github/workflows/dockerfile-validation.yml'
   pull_request:
-    branches: [ main, master ]
+    branches: [ main ]
     paths:
       - 'Dockerfile'
       - '.github/workflows/dockerfile-validation.yml'
