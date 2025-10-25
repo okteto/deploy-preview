@@ -1,0 +1,12 @@
+# Dockerfile.preview — sert le site statique via nginx
+FROM nginx:stable-alpine
+
+# Supprime le content par défaut et copie le site
+RUN rm -rf /usr/share/nginx/html/*
+COPY . /usr/share/nginx/html
+
+# Exposer le port 80 pour la preview
+EXPOSE 80
+
+# Lancer nginx en avant-plan
+CMD ["nginx", "-g", "daemon off;"]

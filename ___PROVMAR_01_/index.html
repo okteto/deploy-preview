@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PROVMA – Créations & Médias</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="light">
+  <header>
+    <h1>🎬 PROVMA</h1>
+    <nav>
+      <a href="#home">Accueil</a>
+      <a href="#videos">Vidéos</a>
+      <a href="#audio">Audio</a>
+      <a href="#contact">Contact</a>
+      <button id="themeToggle">🌙</button>
+    </nav>
+  </header>
+
+  <!-- SECTION HERO -->
+  <section id="home" class="hero">
+    <div class="overlay">
+      <h2 class="fade-in">Bienvenue sur PROVMA</h2>
+      <p class="fade-in delay">Créations. Inspiration. Vidéos. Audio.</p>
+      <a href="#videos" class="btn fade-in delay2">Découvrir les vidéos 🎥</a>
+    </div>
+  </section>
+
+
+
+
+<!---------------------------------------------------------------------------------------->
+
+  <!-- LECTEUR VIDÉO - lecteur au centre de la page -->
+
+  <main>
+    <section id="videos" class="player-section">
+
+      <h2>🎬 Lecteur Vidéos Interactif</h2>
+      <div class="video-player">
+        <video id="mainVideo" controls>
+          <source src="video/PROVMA-GIF-COURONNE-N-B-(6).mp4" type="video/mp4" />
+          Votre navigateur ne supporte pas la lecture vidéo.
+        </video>
+        <h3 id="videoTitle">Visionnage</h3>
+      </div>
+    
+    <div class="playlist">
+  <!---------------------------------------------------------------------------------------->     
+        <div class="video-item" data-src="video/ANTHEOR-var.mp4" data-title="ANTHEOR">
+          <img src="media/PLANE-GUIDE.GIF" alt="ANTHEOR" />
+          <p>ANTHEOR</p>
+        </div>
+<!---------------------------------------------------------------------------------------->
+        <!-- CORRECTION -OK-->
+        <div class="video-item" data-src="video/SUNSET-PART-2-V2.mp4" data-title="Coucher de soleil">
+          <img src="media/COUCHER_DE_SOLEIL.jpg" alt="SUNSET" />
+          <p>SUNSET</p>
+        </div>
+<!---------------------------------------------------------------------------------------->
+      <!-- CORRECTION -OK. TEST-->
+        <div class="video-item" data-src="video/DJI_0624.MP4" data-title="Tonte de Gazon">
+          <img src="media/LION-hologram.JPEG" alt="Miniature lion" />
+           
+          <p>AZUR ROTOR CLUB -Tonte de Gazon</p>
+        </div>
+<!---------------------------------------------------------------------------------------->
+      <!-- CORRECTION -OK----TEST-->
+        <div class="video-item" data-src="video/LACS-AND-RIVIERES_1.mp4" data-title="VERS LE LAC">
+          <img src="media/PLANE-GUIDE.GIF" alt="LACS-AND-RIVIERES" />
+          <p>LACS-&-RIVIERES</p>
+        </div>
+<!---------------------------------------------------------------------------------------->
+      <!-- CORRECTION -OK----TEST-->
+        <div class="video-item" data-src="video/L-ARGENS-VAR-2020_0619_115150_005.MP4" data-title=" L'ARGENS en kayak">
+          <img src="media/L_ARGENS-2024_07_08.png" alt="Miniature ARGENS" />
+           
+          <p>L'ARGENS'</p>
+        </div>
+<!---------------------------------------------------------------------------------------->
+      <!-- CORRECTION -OK----TEST-->
+        <div class="video-item" data-src="video/POINTE_DU_PETIT_CANEIRET.mp4" data-title="PETIT CARNEIRET">
+          <img src="media/CARNEIRET-VIGNETTE.PNG" alt="CARNEIRET" />
+           
+          <p>POINTE DU PETIT CARNEIRET</p>
+        </div>
+<!---------------------------------------------------------------------------------------->
+
+      </div>
+    </section>
+
+ <!---------------------------------------------------------------------------------------->
+
+    <!-- SECTION AUDIO -->
+    <section id="audio" class="audio-section">
+      <h2>🎧 Lecteur Audio</h2>
+      <p>Profite de nos sons exclusifs :</p>
+      <audio id="audioPlayer" controls>
+<!--<source src="REPERTOIR-ZIC/PAPY'S DRONE - 11/10/2025 22.59.mp3" type="audio/mp3" />-->
+<source src="media/PAPYS_DRONE.mp3" type="audio/mpeg" />
+        Votre navigateur ne supporte pas la lecture audio.
+      </audio>
+    </section>
+
+
+<!---------------------------------------------------------------------------------------->
+
+    <!-- CONTACT -->
+    <section id="contact" class="contact">
+      <h2>Contact</h2>
+      <p>Pour toute collaboration ou question :  
+        <a href="mailto:contact@provma.com">contact@provma.com</a>
+      </p>
+    </section>
+  </main>
+
+
+<!---------------------------------------------------------------------------------------->
+
+  <footer>
+    <p>© 2025 PROVMA – Tous droits réservés.</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
