@@ -1,4 +1,4 @@
-name: Deploy preview to GitHub Pages
+name: Deploy preview to GitHub Pages (gh-pages branch)
 
 on:
   push:
@@ -17,10 +17,9 @@ jobs:
           mkdir public
           cp -r ___PROVMAR_01_/* public/
 
-      - name: Upload Pages artifact
-        uses: actions/upload-pages-artifact@v1
+      - name: Deploy to gh-pages branch
+        uses: peaceiris/actions-gh-pages@v4
         with:
-          path: public
-
-      - name: Deploy to GitHub Pages
-        uses: actions/deploy-pages@v1
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./public
+ 
