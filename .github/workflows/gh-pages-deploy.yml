@@ -1,0 +1,26 @@
+name: Deploy preview to GitHub Pages
+
+on:
+  push:
+    branches: [ feature/provma-preview, main ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Copy site to public/
+        run: |
+          rm -rf public || true
+          mkdir public
+          cp -r ___PROVMAR_01_/* public/
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v1
+        with:
+          path: public
+
+      - name: Deploy to GitHub Pages
+        uses: actions/deploy-pages@v1
