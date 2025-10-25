@@ -1,0 +1,16 @@
+[build]
+  publish = "."
+  command = ""
+
+[dev]
+  command = ""
+
+[context.production.environment]
+  NODE_ENV = "production"
+
+[redirects]
+  # example to serve index.html for SPA routing
+  [[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200

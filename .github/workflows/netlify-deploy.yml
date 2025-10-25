@@ -1,0 +1,35 @@
+name: Netlify Deploy (preview & production)
+
+on:
+  pull_request:
+    branches: [ main ]
+  push:
+    branches: [ main ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Node (for netlify-cli)
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Install netlify-cli
+        run: npm install -g netlify-cli
+
+      - name: Deploy to Netlify (preview on PR, production on push to main)
+        env:
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+        run: |
+          if [ -n "$GITHUB_EVENT_NAME" ] ; then
+            # for PRs we create a draft preview, for pushes we publish
+            if [ "$GITHUB_EVENT_NAME" = "pull_request" ]; then
+              netlify deploy --dir=___PROVMAR_01_ --site=$NETLIFY_SITE_ID --json --message "Preview for PR #${{ github.event.number }}" --draft
+            else
+              netlify deploy --dir=___PROVMAR_01_ --site=$NETLIFY_SITE_ID --prod --message "Deploy from ${GITHUB_REF} (${GITHUB_SHA})"
+            fi
+          fi
