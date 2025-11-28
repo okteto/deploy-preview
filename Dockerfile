@@ -1,4 +1,4 @@
-FROM okteto/okteto:master as okteto
+FROM okteto/okteto:3.13.4 as okteto
 
 FROM golang:1.24 as message-builder
 RUN curl -L https://github.com/jqlang/jq/releases/download/jq-1.7.1/jq-linux64 > /usr/bin/jq && \
