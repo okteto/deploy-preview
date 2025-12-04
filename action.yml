@@ -27,7 +27,7 @@ inputs:
     description: "Force deployment of repositories in the 'dependencies' section"
     required: false
   labels:
-    description: "Tag and organize Preview Environments using labels. If several labels are present, they should be separated by commas e.g. label1=VAL1,label2=VAL2,label3=VAL3"
+    description: "Tag and organize Preview Environments using labels. If several labels are present, they should be separated by commas e.g. label1,label2,label3"
     required: false
 runs:
   using: "docker"
