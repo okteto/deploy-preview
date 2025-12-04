@@ -26,6 +26,9 @@ inputs:
   dependencies:
     description: "Force deployment of repositories in the 'dependencies' section"
     required: false
+  labels:
+    description: "Tag and organize Preview Environments using labels"
+    required: false
 runs:
   using: "docker"
   image: "Dockerfile"
@@ -38,6 +41,7 @@ runs:
     - ${{ inputs.branch }}
     - ${{ inputs.log-level }}
     - ${{ inputs.dependencies }}
+    - ${{ inputs.labels }}
 branding:
   color: 'green'
   icon: 'grid'

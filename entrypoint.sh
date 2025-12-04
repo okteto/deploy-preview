@@ -9,6 +9,7 @@ file=$5
 branch=$6
 log_level=$7
 dependencies=$8
+labels=$8
 
 if [ -z $name ]; then
   echo "Preview environment name is required"
@@ -56,6 +57,16 @@ fi
 if [ ! -z "$file" ]; then
 params="${params} --file $file"
 fi
+
+label_params=""
+if [ ! -z "${labels}" ]; then
+  for ARG in $(echo "${labels}" | tr ',' '\n'); do
+    label_params="${label_params} --label ${ARG}"
+  done
+
+  params="${params} $label_params"
+fi
+
 
 if [ "$dependencies" = "false" ]; then
   params="${params} --dependencies=false"
