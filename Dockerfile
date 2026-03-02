@@ -1,12 +1,11 @@
-FROM ghcr.io/okteto/okteto:master as okteto
+FROM ghcr.io/okteto/okteto:master AS okteto
 
-FROM golang:1.24 as message-builder
+FROM golang:1.24 AS message-builder
 RUN curl -L https://github.com/jqlang/jq/releases/download/jq-1.7.1/jq-linux64 > /usr/bin/jq && \
     chmod +x /usr/bin/jq
 
-WORKDIR /build
-COPY go.mod go.sum* ./
-RUN go mod download
+WORKDIR /app
+COPY go.mod .
 COPY message.go .
 RUN go build -o /message .
 
