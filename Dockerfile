@@ -1,4 +1,4 @@
-FROM okteto/okteto:master AS okteto
+FROM ghcr.io/okteto/okteto:master AS okteto
 
 FROM golang:1.24 AS message-builder
 RUN curl -L https://github.com/jqlang/jq/releases/download/jq-1.7.1/jq-linux64 > /usr/bin/jq && \
@@ -21,4 +21,4 @@ COPY entrypoint.sh /entrypoint.sh
 COPY --from=message-builder /message /message
 COPY --from=okteto /usr/local/bin/okteto /usr/local/bin/okteto
 
-ENTRYPOINT ["/entrypoint.sh"]
+ENTRYPOINT ["/entrypoint.sh"] 
