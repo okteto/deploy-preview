@@ -18,9 +18,10 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Set up Okteto CLI
-        uses: okteto/setup@v1
+      - name: Context
+        uses: okteto/context@latest
         with:
+          url: ${{ secrets.OKTETO_URL }}
           token: ${{ secrets.OKTETO_TOKEN }}
 
       - name: Run tests with Okteto
