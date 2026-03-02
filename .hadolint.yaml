@@ -18,9 +18,7 @@ warning:
 # Trusted registries for base images
 trustedRegistries:
   - docker.io
-  - ghcr.io/okteto
-  - golang
-  - ruby
+  - ghcr.io 
 
 # Override specific rules
 override:
