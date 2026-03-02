@@ -31,7 +31,7 @@ inputs:
     required: false
 runs:
   using: "docker"
-  image: "ghcr.io/okteto/deploy-preview:main"
+  image: "docker://ghcr.io/okteto/deploy-preview:main"
   args:
     - ${{ inputs.name }}
     - ${{ inputs.timeout }}
