@@ -18,7 +18,7 @@ warning:
 # Trusted registries for base images
 trustedRegistries:
   - docker.io
-  - okteto
+  - ghcr.io/okteto
   - golang
   - ruby
 
