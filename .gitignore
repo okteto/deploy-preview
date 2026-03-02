@@ -1,0 +1,17 @@
+# Binaries
+message
+*.exe
+*.dll
+*.so
+*.dylib
+
+# Test artifacts
+coverage.out
+*.test
+
+# Build artifacts
+*.o
+*.a
+
+# Temporary files
+verify_behavior.sh

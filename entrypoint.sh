@@ -101,11 +101,10 @@ fi
 
 if [ -n "$GITHUB_TOKEN" ]; then
   if [ $ret = 1 ]; then
-    message=$(/message $name 1)
+    /message generate $name 1
   else
-    message=$(/message $name 0)
+    /message generate $name 0
   fi
-  /notify-pr.sh "$message" $GITHUB_TOKEN $name
 fi
 
 if [ $ret = 1 ]; then
