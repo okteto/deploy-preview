@@ -5,7 +5,8 @@ RUN curl -L https://github.com/jqlang/jq/releases/download/jq-1.7.1/jq-linux64 >
     chmod +x /usr/bin/jq
 
 WORKDIR /app
-COPY go.mod .
+COPY go.mod go.sum ./
+RUN go mod download
 COPY message.go .
 RUN go build -o /message .
 
