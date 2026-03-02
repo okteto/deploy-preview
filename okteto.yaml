@@ -1,0 +1,13 @@
+build:
+  preview-action:
+    context: .
+    dockerfile: Dockerfile
+
+test:
+  unit:
+    image: golang:1.24
+    commands:
+      - go mod download
+      - go test -v -race -coverprofile=coverage.out
+    artifacts:
+      - coverage.out
