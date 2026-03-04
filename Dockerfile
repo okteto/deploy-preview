@@ -1,6 +1,6 @@
 FROM ghcr.io/okteto/okteto:master AS okteto
 
-FROM golang:1.24 AS message-builder
+FROM ghcr.io/okteto/golang:1.25 AS message-builder
 RUN curl -L https://github.com/jqlang/jq/releases/download/jq-1.7.1/jq-linux64 > /usr/bin/jq && \
     chmod +x /usr/bin/jq
 
@@ -10,9 +10,9 @@ COPY message.go .
 RUN go build -o /message .
 
 
-FROM ruby:3-slim-buster
+FROM ghcr.io/okteto/ruby:4
 
-RUN gem install octokit:10.0.0 faraday-retry:2.3.2
+RUN gem install octokit:10.0.0 faraday-retry:2.4.0
 
 COPY notify-pr.sh /notify-pr.sh
 RUN chmod +x /notify-pr.sh
