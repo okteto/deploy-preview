@@ -24,7 +24,8 @@ else
     pr = event["client_payload"]["pull_request"]["number"]
 end
 
-github = Octokit::Client.new(:access_token => ENV["GITHUB_TOKEN"])
+api_endpoint = ENV.fetch("GITHUB_API_URL", "https://api.github.com")
+github = Octokit::Client.new(:access_token => ENV["GITHUB_TOKEN"], :api_endpoint => api_endpoint)
 comments = github.issue_comments(repo, pr)
 comment = comments.find do |c|
     c["body"].start_with?("Your preview environment") &&
