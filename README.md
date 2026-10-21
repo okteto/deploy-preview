@@ -3,7 +3,7 @@
 ## Automate your development workflows using Github Actions and Okteto
 
 GitHub Actions gives you the flexibility to build automated software development workflows. With GitHub Actions for Okteto you can create workflows to build, deploy and update your applications in [Okteto](https://okteto.com).
-Follow [this tutorial](https://okteto.com/docs/cloud/preview-environments/preview-environments-github/) for a full preview environment configuration sample.
+Follow [this tutorial](https://www.okteto.com/docs/previews/using-github-actions/) for a full preview environment configuration sample.
 
 Try Okteto for free for 30 days, no credit card required. [Start your 30-day trial now](https://www.okteto.com/free-trial/)!
 
@@ -73,6 +73,50 @@ jobs:
       with:
         name: dev-previews-${{ github.event.number }}
 ```
+
+### Running tests in the preview environment
+
+The preview environment is where your automated tests run on every pull request. After deploying it, use the `okteto/test` action to run the Test Containers defined in the `test` section of your [Okteto Manifest](https://www.okteto.com/docs/reference/okteto-manifest/#test-object-optional) against it. Set the `namespace` input of `okteto/test` to the `name` of the preview environment.
+
+```yaml
+# File: .github/workflows/preview.yml
+on:
+  pull_request:
+    branches:
+      - main
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  preview:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Context
+      uses: okteto/context@latest
+      with:
+        url: https://okteto.example.com
+        token: ${{ secrets.OKTETO_TOKEN }}
+
+    - name: "Deploy the preview environment"
+      uses: okteto/deploy-preview@latest
+      env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        name: pr-${{ github.event.number }}
+
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: "Run tests in the preview environment"
+      uses: okteto/test@latest
+      with:
+        namespace: pr-${{ github.event.number }}
+        tests: e2e
+```
+
+If a Test Container fails, the workflow fails and the pull request check reports it.
 
 ## Advanced usage
 
