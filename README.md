@@ -76,7 +76,7 @@ jobs:
 
 ### Running tests in the preview environment
 
-The preview environment is where your automated tests run on every pull request. After deploying it, use the [okteto/test](https://github.com/okteto/test) action to run the Test Containers defined in the `test` section of your [Okteto Manifest](https://www.okteto.com/docs/reference/okteto-manifest/#test-object-optional) against it. Set the `namespace` input of `okteto/test` to the `name` of the preview environment.
+The preview environment is where your automated tests run on every pull request. After deploying it, use the `okteto/test` action to run the Test Containers defined in the `test` section of your [Okteto Manifest](https://www.okteto.com/docs/reference/okteto-manifest/#test-object-optional) against it. Set the `namespace` input of `okteto/test` to the `name` of the preview environment.
 
 ```yaml
 # File: .github/workflows/preview.yml
@@ -116,7 +116,7 @@ jobs:
         tests: e2e
 ```
 
-If a Test Container fails, the workflow fails and the pull request check reports it. See the [movies sample](https://github.com/okteto/movies/blob/main/.github/workflows/preview.yaml) for a complete workflow that also uploads the test reports as workflow artifacts.
+If a Test Container fails, the workflow fails and the pull request check reports it.
 
 ## Advanced usage
 
