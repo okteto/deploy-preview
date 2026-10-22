@@ -11,7 +11,7 @@ RUN apk add --no-cache --upgrade \
 
 # ghcr.io/okteto/golang has no Go 1.26.10 build yet. Switch back to ghcr.io/okteto/golang:1.26
 # once `docker run --rm ghcr.io/okteto/golang:1.26 go version` prints go1.26.10 or later.
-FROM golang:1.26.10 AS message-builder
+FROM golang:1.26.10@sha256:672c944cfd07599b5f1bb179869270cdc94c6254e41db4d431259693cb286b82 AS message-builder
 RUN curl -L https://github.com/jqlang/jq/releases/download/jq-1.7.1/jq-linux64 > /usr/bin/jq && \
     chmod +x /usr/bin/jq
 
