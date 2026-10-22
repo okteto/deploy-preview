@@ -22,8 +22,9 @@ fi
 
 if [ ! -z "$OKTETO_CA_CERT" ]; then
    echo "Custom certificate is provided"
-   # Append to the bundle: update-ca-certificates would rebuild it from the base image's list, which still has the distrusted eMudhra roots
-   printf '%s\n' "$OKTETO_CA_CERT" >> /etc/ssl/certs/ca-certificates.crt
+   # Append to the bundle: update-ca-certificates would rebuild it from the base image's list, which still has the distrusted eMudhra roots.
+   # echo, not printf: dash's echo expands \n, so a secret stored on one line with \n escapes keeps working.
+   echo "$OKTETO_CA_CERT" >> /etc/ssl/certs/ca-certificates.crt
 fi
 
 if [ -z "$branch" ]; then
