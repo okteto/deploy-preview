@@ -22,8 +22,8 @@ fi
 
 if [ ! -z "$OKTETO_CA_CERT" ]; then
    echo "Custom certificate is provided"
-   echo "$OKTETO_CA_CERT" > /usr/local/share/ca-certificates/okteto_ca_cert.crt
-   update-ca-certificates
+   # Append to the bundle: update-ca-certificates would rebuild it from the base image's list, which still has the distrusted eMudhra roots
+   printf '%s\n' "$OKTETO_CA_CERT" >> /etc/ssl/certs/ca-certificates.crt
 fi
 
 if [ -z "$branch" ]; then
