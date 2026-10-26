@@ -22,12 +22,12 @@ fi
 
 if [ ! -z "$OKTETO_CA_CERT" ]; then
    echo "Custom certificate is provided"
-   # echo, not printf: dash's echo expands \n, so a secret stored on one line with \n escapes keeps working.
    cert_file=$(mktemp)
+   # echo, not printf: dash's echo expands \n, so a secret stored on one line with \n escapes keeps working.
    echo "$OKTETO_CA_CERT" > "$cert_file"
    # One block that doesn't parse makes OpenSSL drop the whole bundle, so check every block before appending.
-   # crl2pkcs7 parses them the way OpenSSL loads the bundle; x509 rejects text with no certificate, which crl2pkcs7 accepts.
-   if ! openssl crl2pkcs7 -nocrl -certfile "$cert_file" -out /dev/null 2>/dev/null || ! openssl x509 -in "$cert_file" -noout 2>/dev/null; then
+   # crl2pkcs7 parses them the way OpenSSL loads the bundle, and -print_certs lists the certificates among them, if any.
+   if ! openssl crl2pkcs7 -nocrl -certfile "$cert_file" 2>/dev/null | openssl pkcs7 -print_certs -noout 2>/dev/null | grep -q '^subject='; then
      echo "OKTETO_CA_CERT is not a valid PEM certificate"
      exit 1
    fi
