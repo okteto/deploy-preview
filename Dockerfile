@@ -1,7 +1,7 @@
 # Minimum ca-certificates: 20261020-r0 drops the emSign roots behind the eMudhra compromise (CVE-2026-111943)
 ARG CA_CERTIFICATES_MIN_VERSION=20261020-r0
 
-FROM ghcr.io/okteto/okteto:3.25.0 AS okteto
+FROM ghcr.io/okteto/okteto:master AS okteto
 
 FROM alpine:3.23@sha256:85fe1e81d6758c208f3e1eed4338a1997e19d4be002d4dd32d3100c9a8c010a0 AS certs
 ARG CA_CERTIFICATES_MIN_VERSION
